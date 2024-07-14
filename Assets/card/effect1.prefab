@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 758933759984560231, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_text
-      value: fireball, do 10 damage
+      value: fireball, do 6 damage
       objectReference: {fileID: 0}
     - target: {fileID: 1706282693157267237, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: type

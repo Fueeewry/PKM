@@ -8,8 +8,7 @@ public class cardgetreward : MonoBehaviour, IPointerDownHandler
 {
     public GameObject referenceCard;
     public void OnPointerDown(PointerEventData eventData){
-        battlescript a = GameObject.Find("Player").GetComponent<battlescript>();
-        a.getcard(referenceCard);
+        battlescript.Instance.getcard(referenceCard);
         transform.parent.gameObject.SetActive(false);
     }
 }

@@ -3,24 +3,61 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class battlescript : MonoBehaviour
 {
+    public static battlescript Instance {get; private set;} = null;
+ 
+    private void Awake(){
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     public phaseClass[] phaseArray;
     public GameObject[] cardselectedlist, phaseObject;
+    public Transform[] deckshows;
     public Stack<GameObject> energyObjectList = new Stack<GameObject>();
-    public GameObject goToEffect, energyObject, rewards, cardSelect, relic, shieldobject;
+    public GameObject goToEffect, energyObject, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen;
     public Transform arrow, energySlotTrans, rewardGrid;
     public int maxEnergy = 3, energy = 3, idx = 0;
     IDamageable enemyscript;
     public Slider healthbar;
-    public TMP_Text energytxt, shieldtext;
+    public TMP_Text energytxt, shieldtext, healthtext;
     public List<relicvariant> relicVariantList = new List<relicvariant>();
 
     int shieldvalue = 0;
 
     public List<GameObject> enemylist = new List<GameObject>();
+
     relicvariant relicinstantiated;
+
+    void Start(){
+        DontDestroyOnLoad(this.gameObject);
+        healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+    }
+
+    public void sceneChanger(string a){
+        SceneManager.LoadScene(a);
+
+        if(a.Equals("event")){
+            canvas.SetActive(false);
+        }else{
+            canvas.SetActive(true);
+            StartBattle();
+        }
+    }
+    public void endrun(){
+        //SceneManager.LoadScene("menu");
+        //Destroy(this.gameObject);
+    }
+
+    public void showEffect(int value, Vector3 pos){
+        GameObject a = Instantiate(damageshow, pos, Quaternion.Euler(0,0,0));
+        a.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = value.ToString();
+    }
 
     public void enableRewards(bool isrelic){
         rewards.SetActive(true);
@@ -35,18 +72,23 @@ public class battlescript : MonoBehaviour
         }
     }
 
-    void OnEnable(){
-        StartCoroutine(wait());
-
-    }
     IEnumerator wait(){
         yield return new WaitForSeconds(0.2f);
         startTurn();
         StartCoroutine(refreshEnergy());
         yield return new WaitForSeconds(0.75f);
         GameObject a = GameObject.FindGameObjectWithTag("enemy");
-        enemyscript = a.GetComponent<IDamageable>();
-        arrow.position = a.transform.position + new Vector3(0,3,0);
+        if(a != null){
+            arrow.gameObject.SetActive(true);
+            enemyscript = a.GetComponent<IDamageable>();
+            arrow.position = a.transform.position + new Vector3(0,3,0);
+        }else{
+            arrow.gameObject.SetActive(false);
+        }
+    }
+
+    public void StartBattle(){
+        StartCoroutine(wait());
     }
 
     public bool reduceEnergy(int cardCost){
@@ -110,6 +152,17 @@ public class battlescript : MonoBehaviour
             }
             phaseArray[idx].cardInHandList[i].anchoredPosition = new Vector3((i - r) * 75,k*20 - 40,0);
             phaseArray[idx].cardInHandList[i].localRotation = Quaternion.Euler(0,0,(k - phaseArray[idx].cardInHandList.Count) * 5 * plus * notmidpoint);
+        }
+    }
+
+    public void killedanenemy(){
+        GameObject a = GameObject.FindGameObjectWithTag("enemy");
+        if(a != null){
+            arrow.gameObject.SetActive(true);
+            enemyscript = a.GetComponent<IDamageable>();
+            arrow.position = a.transform.position + new Vector3(0,3,0);
+        }else{
+            arrow.gameObject.SetActive(false);
         }
     }
 
@@ -228,18 +281,27 @@ public class battlescript : MonoBehaviour
 
     public void damaged(int damage){
         if(shieldvalue > 0){
-            if(shieldvalue < damage){
-                damage -= (int)shieldvalue;
+            if(shieldvalue > damage){
+                shieldvalue -= damage;
+                shieldtext.text = shieldvalue.ToString();
+            }else{
+                damage -= shieldvalue;
                 shieldtext.text = "0";
                 shieldvalue = 0;
                 shieldobject.SetActive(false);
-            }else{
-                shieldvalue -= damage;
-                shieldtext.text = shieldvalue.ToString();
                 return;
             }
         }
         healthbar.value -= damage;
+        healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        battlescript.Instance.showEffect(damage, transform.position);
+
+        if(healthbar.value <= 0){
+            dead();
+        }
+    }
+    public void dead(){
+        deathscreen.SetActive(true);
     }
 
     public void reset(){
@@ -261,6 +323,18 @@ public class battlescript : MonoBehaviour
 
     public void getcard(GameObject a){
         Instantiate(a, phaseArray[idx].drawpileTrans);
+
+        switch(a.GetComponent<cardlogic>().type){
+            case "effect":
+                Instantiate(a, deckshows[0]);
+                break;
+            case "function":
+                Instantiate(a, deckshows[1]);
+                break;
+            case "variable":
+                Instantiate(a, deckshows[2]);
+                break;
+        }
     }
     public void getrelic(){
         Invoke(relicinstantiated.getRelicName, 0.1f);
@@ -272,31 +346,24 @@ public class battlescript : MonoBehaviour
 
     int variable = -1;
     string function = "", effect = "";
-
     public void addVariable(int x){
         variable = x;
     }
-
     public void addFunction(string function){
         this.function = function;
     }
-
     public void addEffect(string effect){
         this.effect = effect;
     }
-
     public void removeVariable(){
         variable = -1;
     }
-
     public void removeFunction(){
         this.function = "";
     }
-
     public void removeEffect(){
         this.effect = "";
     }
-
     public void removeAll(){
         removeVariable();
         removeFunction();
@@ -314,7 +381,7 @@ public class battlescript : MonoBehaviour
             Invoke(function, 0.1f);
 
             for(int i = 0;i < cardselectedlist.Length; i++){
-                RectTransform a = cardselectedlist[i].transform.GetChild(1).gameObject.GetComponent<RectTransform>();
+                RectTransform a = cardselectedlist[i].transform.GetChild(0).gameObject.GetComponent<RectTransform>();
                 phaseArray[i].discardpile.Add(a);
                 phaseArray[i].cardInHandList.Remove(a);
                 a.SetParent(phaseArray[i].discardpileTrans, false);

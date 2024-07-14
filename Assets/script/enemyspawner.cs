@@ -19,6 +19,14 @@ public class enemyspawner : MonoBehaviour
             GameObject b = Instantiate(enemylist[a[i]], transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
             enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
         }
+        InvokeRepeating("checkbattledone", 0.1f, 0.1f);
+    }
+
+    public void checkbattledone(){
+        enemyInstantiatedList.RemoveAll(item => item == null);
+        if(enemyInstantiatedList.Count == 0){
+            battlescript.Instance.enableRewards(false);
+        }
     }
 }
 
