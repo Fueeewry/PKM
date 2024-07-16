@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 
 public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public string type, function, effect;
+    public cardtype type;
+    public string function, effect;
     public int variable = 0, cost = 1;
     Transform child;
     int childOrder;

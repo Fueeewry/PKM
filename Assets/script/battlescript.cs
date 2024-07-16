@@ -20,8 +20,8 @@ public class battlescript : MonoBehaviour
     public GameObject[] cardselectedlist, phaseObject;
     public Transform[] deckshows;
     public Stack<GameObject> energyObjectList = new Stack<GameObject>();
-    public GameObject goToEffect, energyObject, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen;
-    public Transform arrow, energySlotTrans, rewardGrid;
+    public GameObject goToEffect, energyObject, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject;
+    public Transform arrow, energySlotTrans, rewardGrid, relicgrid;
     public int maxEnergy = 3, energy = 3, idx = 0;
     IDamageable enemyscript;
     public Slider healthbar;
@@ -63,13 +63,19 @@ public class battlescript : MonoBehaviour
         rewards.SetActive(true);
         if(isrelic == true){
             relic.SetActive(true);
-            relicinstantiated = relicVariantList[Random.Range(0, relicVariantList.Count)];
+            int relicchoosen = Random.Range(0, relicVariantList.Count);
+            relicinstantiated = relicVariantList[relicchoosen];
             relic.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = relicinstantiated.relicname;
             relic.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = relicinstantiated.image;
-            //a.GetComponent<relicgetlogic>().getRelicName = 
         }else{
             cardSelect.SetActive(true);
         }
+    }
+    public void spawnrelic(){
+        GameObject b = Instantiate(relicobject, relicgrid);
+        reliclogic rl = b.GetComponent<reliclogic>();
+        rl.setdata(relicinstantiated.image);
+        getrelic(relicinstantiated.getRelicName);
     }
 
     IEnumerator wait(){
@@ -325,19 +331,25 @@ public class battlescript : MonoBehaviour
         Instantiate(a, phaseArray[idx].drawpileTrans);
 
         switch(a.GetComponent<cardlogic>().type){
-            case "effect":
+            case cardtype.effect:
                 Instantiate(a, deckshows[0]);
                 break;
-            case "function":
+            case cardtype.function:
                 Instantiate(a, deckshows[1]);
                 break;
-            case "variable":
+            case cardtype.variable:
                 Instantiate(a, deckshows[2]);
                 break;
         }
     }
-    public void getrelic(){
-        Invoke(relicinstantiated.getRelicName, 0.1f);
+    void getrelic(string a){
+        Invoke(a, 0.1f);
+    }
+    public void getsword(){
+        Debug.Log("do something");
+    }
+    public void gettriangle(){
+        Debug.Log("do something");
     }
 
     public void removeCard(RectTransform a){
@@ -413,6 +425,12 @@ public class battlescript : MonoBehaviour
     }
 }
 
+public enum cardtype{
+    effect,
+    function,
+    variable
+}
+
 [System.Serializable]
 public class movevariation{
     public int value;
@@ -424,4 +442,12 @@ public class movevariation{
         this.type = type;
         this.multiplicative = multiplicative;
     }   
+}
+
+[System.Serializable]
+public class relicvariant
+{
+    public Sprite image;
+    public string getRelicName;
+    public string relicname;
 }
