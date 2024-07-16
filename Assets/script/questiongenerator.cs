@@ -15,7 +15,7 @@ public class questiongenerator : MonoBehaviour
         int rnd = Random.Range(0, 4);
         int a = Random.Range(1, 10);
         int b = Random.Range(1, 10);
-        int answer = 0;
+        float answer = 0;
         switch(rnd){
             case 0:
                 answer = a + b;
@@ -31,11 +31,11 @@ public class questiongenerator : MonoBehaviour
                 break;
             case 3:
                 answer = a / b;
-                question.text = a.ToString() + " : " + b.ToString();
+                question.text = a.ToString() + " / " + b.ToString();
                 break;
         }
         foreach(GameObject go in answers){
-            int wronganswer = answer + Random.Range(1, 3);
+            float wronganswer = 0;
             if(Random.Range(0, 2) == 0){
                 wronganswer = answer + Random.Range(1, 3);
             }else{
