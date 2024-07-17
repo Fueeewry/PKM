@@ -27,6 +27,7 @@ public class battlescript : MonoBehaviour
     public Slider healthbar;
     public TMP_Text energytxt, shieldtext, healthtext;
     public List<relicvariant> relicVariantList = new List<relicvariant>();
+    public Animator anim;
 
     int shieldvalue = 0;
 
@@ -57,6 +58,8 @@ public class battlescript : MonoBehaviour
     public void showEffect(int value, Vector3 pos){
         GameObject a = Instantiate(damageshow, pos, Quaternion.Euler(0,0,0));
         a.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = value.ToString();
+        a.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(0,4), ForceMode2D.Impulse);
+        Destroy(a, 0.75f);
     }
 
     public void enableRewards(bool isrelic){
@@ -286,6 +289,7 @@ public class battlescript : MonoBehaviour
     }
 
     public void damaged(int damage){
+        anim.Play("getHit");
         if(shieldvalue > 0){
             if(shieldvalue > damage){
                 shieldvalue -= damage;

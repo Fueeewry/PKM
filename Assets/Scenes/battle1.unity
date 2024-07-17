@@ -564,8 +564,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyCombinationList:
   - combination: 0100000000000000
-  - combination: 000000000100000001000000
-  - combination: 010000000100000000000000
+  - combination: 000000000100000000000000
+  - combination: 010000000000000000000000
 --- !u!4 &1954358793
 Transform:
   m_ObjectHideFlags: 0

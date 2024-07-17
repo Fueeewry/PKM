@@ -5,13 +5,14 @@ using UnityEngine.EventSystems;
 
 public class receiver : MonoBehaviour, IDropHandler
 {
-    public string type;
+    public cardtype type;
     public battlescript bs;
 
     public void OnDrop(PointerEventData eventData){
         if(eventData.pointerDrag!=null){
             cardlogic a = eventData.pointerDrag.GetComponent<cardlogic>();
-            if(type.Equals(a.type) && transform.childCount == 0 && bs.reduceEnergy(a.cost) == true){
+            Debug.Log(type);
+            if(a.type == type && transform.childCount == 0 && bs.reduceEnergy(a.cost) == true){
                 a.turnRaycast(false);
                 eventData.pointerDrag.transform.SetParent(transform, false);
                 bs.removeCard(eventData.pointerDrag.GetComponent<RectTransform>());
