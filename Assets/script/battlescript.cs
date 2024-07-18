@@ -29,6 +29,8 @@ public class battlescript : MonoBehaviour
     public List<relicvariant> relicVariantList = new List<relicvariant>();
     public Animator anim;
 
+    bool interactionOnGoing = false;
+
     int shieldvalue = 0;
 
     public List<GameObject> enemylist = new List<GameObject>();
@@ -46,6 +48,7 @@ public class battlescript : MonoBehaviour
         if(a.Equals("event")){
             canvas.SetActive(false);
         }else{
+            interactionOnGoing = true;
             canvas.SetActive(true);
             StartBattle();
         }
@@ -85,7 +88,7 @@ public class battlescript : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         startTurn();
         StartCoroutine(refreshEnergy());
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.2f);
         GameObject a = GameObject.FindGameObjectWithTag("enemy");
         if(a != null){
             arrow.gameObject.SetActive(true);
@@ -104,7 +107,9 @@ public class battlescript : MonoBehaviour
         if(energy>=cardCost){
             energy -= cardCost;
             energytxt.text = energy.ToString();
-            Destroy(energyObjectList.Pop());
+            if(energyObjectList.Count > 0){
+                Destroy(energyObjectList.Pop());
+            }
         }else{
             return false;
         }
@@ -173,6 +178,24 @@ public class battlescript : MonoBehaviour
         }else{
             arrow.gameObject.SetActive(false);
         }
+        StartCoroutine(waitfindenemy());
+    }
+    IEnumerator waitfindenemy(){
+        yield return new WaitForSeconds(0.6f);
+        if(enemyscript==null){
+            GameObject a = GameObject.FindGameObjectWithTag("enemy");
+            if(a != null){
+                arrow.gameObject.SetActive(true);
+                enemyscript = a.GetComponent<IDamageable>();
+                arrow.position = a.transform.position + new Vector3(0,3,0);
+            }else{
+                arrow.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public bool checkInteractionOnGoing(){
+        return interactionOnGoing;
     }
 
     public void changePhase(){
@@ -188,6 +211,7 @@ public class battlescript : MonoBehaviour
     }
 
     public void trueEndTurn(){
+        interactionOnGoing = true;
         StartCoroutine(trueEndTurnCoroutine());
         for(int i = 0;i < cardselectedlist.Length; i++){
             if(cardselectedlist[i].transform.childCount > 1){
@@ -203,14 +227,16 @@ public class battlescript : MonoBehaviour
     IEnumerator trueEndTurnCoroutine(){
         List<IDamageable> enemyInstantiatedList = GameObject.Find("enemyspawner").GetComponent<enemyspawner>().enemyInstantiatedList;
         foreach(IDamageable a in enemyInstantiatedList){
+            enemyInstantiatedList.RemoveAll(item => item == null);
             yield return new WaitForSeconds(0.5f);
-            if(a!=null){
+            if(a.checkstillalive()==true){
                 a.move();
             }
         }
         foreach(IDamageable a in enemyInstantiatedList){
             yield return new WaitForSeconds(0.2f);
-            if(a!=null){
+            enemyInstantiatedList.RemoveAll(item => item == null);
+            if(a.checkstillalive()==true){
                 a.prepareattack();
             }
         }
@@ -219,6 +245,7 @@ public class battlescript : MonoBehaviour
     }
 
     public void trueStartTurn(){
+        killedanenemy();
         shieldvalue = 0;
         shieldtext.text = shieldvalue.ToString();
         shieldobject.SetActive(false);
@@ -230,7 +257,7 @@ public class battlescript : MonoBehaviour
         energytxt.text = energy.ToString();
         energyObjectList.Clear();
         for(int i = maxEnergy-1; i>=0; i--){
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.05f);
             GameObject a = Instantiate(energyObject, energySlotTrans);
             energyObjectList.Push(a);
             if(i==maxEnergy-1 || i == 0){
@@ -239,6 +266,7 @@ public class battlescript : MonoBehaviour
                 a.transform.localPosition += new Vector3((maxEnergy-1-i) * 55, i * 55, 0);
             }
         }
+        interactionOnGoing = false;
     }
 
     public void startTurn(){
@@ -288,6 +316,15 @@ public class battlescript : MonoBehaviour
         }
     }
 
+    public void getupgrade(){
+        
+    }
+    public void gethealrestsite(){
+        healthbar.value += healthbar.value * 0.3f;
+    }
+    public void getheal(int heal){
+        healthbar.value += heal;
+    }
     public void damaged(int damage){
         anim.Play("getHit");
         if(shieldvalue > 0){

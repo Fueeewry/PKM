@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class enemyspawner : MonoBehaviour
 {
+    public static enemyspawner Instance {get; private set;} = null;
+
+    private void Awake(){
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     public List<enemycombination> enemyCombinationList;
     public List<IDamageable> enemyInstantiatedList = new List<IDamageable>();
     void Start()
@@ -13,7 +22,7 @@ public class enemyspawner : MonoBehaviour
 
     IEnumerator wait(){
         yield return new WaitForSeconds(0.25f);
-        List<GameObject> enemylist = FindObjectOfType<battlescript>().enemylist;
+        List<GameObject> enemylist = battlescript.Instance.enemylist;
         int[] a = enemyCombinationList[Random.Range(0, enemyCombinationList.Count)].combination;
         for(int i = 0; i<a.Length;i++){
             GameObject b = Instantiate(enemylist[a[i]], transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
@@ -26,6 +35,7 @@ public class enemyspawner : MonoBehaviour
         enemyInstantiatedList.RemoveAll(item => item == null);
         if(enemyInstantiatedList.Count == 0){
             battlescript.Instance.enableRewards(false);
+            CancelInvoke("checkbattledone");
         }
     }
 }

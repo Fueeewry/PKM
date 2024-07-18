@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public cardtype type;
     public string function, effect;
+    public bool upgraded = false;
     public int variable = 0, cost = 1;
     Transform child;
     int childOrder;
@@ -15,6 +17,7 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     bool dragging = false, inside = false;
     Animator anim;
     public Image image;
+    public TMP_Text titletxt;
     
     void Start(){
         child = transform.GetChild(0);
@@ -93,5 +96,10 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             yield return new WaitForSeconds(0.02f);
         }
         image.raycastTarget = true;
+    }
+
+    public void upgrade(){
+        upgraded = true;
+        titletxt.color = new Color32(50, 205, 50, 1);
     }
 }

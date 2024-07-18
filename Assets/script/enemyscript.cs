@@ -43,19 +43,30 @@ public class enemyscript : MonoBehaviour, IDamageable
         battlescript.Instance.showEffect(damage, transform.position);
 
         if(healthbar.value <= 0){
+            battlescript.Instance.killedanenemy();
+            enemyspawner.Instance.enemyInstantiatedList.Remove(this);
             if(anim!=null){
                 anim.Play("enemydead");
             }
-            Destroy(this.gameObject, 0.4f);
+            if(instantiatedIntent != null){
+                Destroy(instantiatedIntent);
+            }
+            Destroy(this.gameObject, 0.5f);
         }
     }
 
     movevariation mv;
     GameObject instantiatedIntent;
 
+    public bool checkstillalive(){
+        if(gameObject == null){
+            return false;
+        }
+        return true;
+    }
+
     public void prepareattack(){
         if(instantiatedIntent != null){
-            battlescript.Instance.killedanenemy();
             Destroy(instantiatedIntent);
         }
         mv = variation[Random.Range(0, variation.Count)];
