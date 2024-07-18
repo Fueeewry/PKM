@@ -486,6 +486,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: effect1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 9218464574040886223, guid: 3ee5cee737e59644588c8c904b9dd463, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -874,18 +878,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 176672486}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &176672489
 MonoBehaviour:
@@ -3001,6 +2993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12f3be550b37a82448060312435fdde2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardbutton: {fileID: 176672486}
   cardlist:
   - {fileID: 1718467268695378567, guid: bba449037d9022841b724cee5d6105ae, type: 3}
   - {fileID: 1718467268695378567, guid: 6c6048feb906e5d49b5f1953b3719133, type: 3}
@@ -4441,7 +4434,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000d910b767
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -5635,6 +5628,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: repeater1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7558576594703878424, guid: 16bcd385bc8108f4a949386ebf50e529, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5939,7 +5936,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 187545086}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
         m_Mode: 1
@@ -6891,7 +6888,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -115}
+  m_AnchoredPosition: {x: 150, y: -70}
   m_SizeDelta: {x: 250, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1064524570
@@ -6949,18 +6946,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1018951422}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1064524568}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -7526,6 +7511,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: effect1
       objectReference: {fileID: 0}
+    - target: {fileID: 9218464574040886223, guid: 3ee5cee737e59644588c8c904b9dd463, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8038,6 +8027,10 @@ PrefabInstance:
     - target: {fileID: 6389638659623152143, guid: 16bcd385bc8108f4a949386ebf50e529, type: 3}
       propertyPath: m_Name
       value: repeater1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558576594703878424, guid: 16bcd385bc8108f4a949386ebf50e529, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8635,7 +8628,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1740050649
   m_SortingOrder: 9
   m_TargetDisplay: 0
 --- !u!1 &1410887594
@@ -9739,6 +9732,10 @@ PrefabInstance:
     - target: {fileID: 6389638659623152143, guid: 16bcd385bc8108f4a949386ebf50e529, type: 3}
       propertyPath: m_Name
       value: repeater1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558576594703878424, guid: 16bcd385bc8108f4a949386ebf50e529, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11909,7 +11906,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1740050649
   m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!1 &1869805326
@@ -17438,6 +17435,10 @@ PrefabInstance:
     - target: {fileID: 5739674362599057624, guid: 3ee5cee737e59644588c8c904b9dd463, type: 3}
       propertyPath: m_Name
       value: effect1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9218464574040886223, guid: 3ee5cee737e59644588c8c904b9dd463, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

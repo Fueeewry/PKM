@@ -7,8 +7,13 @@ using UnityEngine.EventSystems;
 public class cardgetreward : MonoBehaviour, IPointerDownHandler
 {
     public GameObject referenceCard;
+    public GameObject cardbutton;
+    public void init(GameObject a){
+        cardbutton = a;
+    }
     public void OnPointerDown(PointerEventData eventData){
         battlescript.Instance.getcard(referenceCard);
-        transform.parent.gameObject.SetActive(false);
+        cardbutton.SetActive(false);
+        transform.parent.parent.gameObject.SetActive(false);
     }
 }

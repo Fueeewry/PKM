@@ -53,10 +53,6 @@ public class battlescript : MonoBehaviour
             StartBattle();
         }
     }
-    public void endrun(){
-        //SceneManager.LoadScene("menu");
-        //Destroy(this.gameObject);
-    }
 
     public void showEffect(int value, Vector3 pos){
         GameObject a = Instantiate(damageshow, pos, Quaternion.Euler(0,0,0));
@@ -350,6 +346,10 @@ public class battlescript : MonoBehaviour
     public void dead(){
         deathscreen.SetActive(true);
     }
+    public void endrun(){
+        sceneChanger("Main menu");
+        Destroy(this.gameObject);
+    }
 
     public void reset(){
         foreach(phaseClass b in phaseArray){
@@ -369,17 +369,27 @@ public class battlescript : MonoBehaviour
     }
 
     public void getcard(GameObject a){
-        Instantiate(a, phaseArray[idx].drawpileTrans);
+        switch(a.GetComponent<cardlogic>().type){
+            case cardtype.effect:
+                Instantiate(a, phaseArray[0].drawpileTrans);
+                break;
+            case cardtype.function:
+                Instantiate(a, phaseArray[1].drawpileTrans);
+                break;
+            case cardtype.variable:
+                Instantiate(a, phaseArray[2].drawpileTrans);
+                break;
+        }
 
         switch(a.GetComponent<cardlogic>().type){
             case cardtype.effect:
-                Instantiate(a, deckshows[0]);
+                Instantiate(a, deckshows[0]).GetComponent<cardlogic>().enabled = false;
                 break;
             case cardtype.function:
-                Instantiate(a, deckshows[1]);
+                Instantiate(a, deckshows[1]).GetComponent<cardlogic>().enabled = false;
                 break;
             case cardtype.variable:
-                Instantiate(a, deckshows[2]);
+                Instantiate(a, deckshows[2]).GetComponent<cardlogic>().enabled = false;
                 break;
         }
     }

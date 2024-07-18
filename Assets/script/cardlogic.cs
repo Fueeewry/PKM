@@ -75,6 +75,7 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //child.localRotation = Quaternion.Euler(0,0,0);
     }
     public void turnRaycast(bool a){
+        Debug.Log("testt");
         transform.rotation = Quaternion.Euler(0,0,0);
         transform.localPosition = new Vector3(0,0,0);
         image.raycastTarget = a;
