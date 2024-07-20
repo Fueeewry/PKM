@@ -1,111 +1,222 @@
 using System;
-   using System.Collections.Generic;
-   using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
-   public class MapGenerator : MonoBehaviour
-   {
-       public int numFloors = 15;
-       public int minPathsPerFloor = 3;
-       public int maxPathsPerFloor = 4;
+public class MapGenerator : MonoBehaviour
+{
+    public int numFloors = 15;
+    public int minPathsPerFloor = 3;
+    public int maxPathsPerFloor = 4;
 
-       private List<List<Node>> map;
+    [SerializeField] private float floorHeight = 100f;  // New variable to control height between floors
+    [SerializeField] private float nodeSpacing = 100f;  // Horizontal spacing between nodes
 
-       void Start()
-       {
-           GenerateMap();
-       }
+    [SerializeField] private GameObject startNodePrefab;
+    [SerializeField] private GameObject enemyNodePrefab;
+    [SerializeField] private GameObject restSiteNodePrefab;
+    [SerializeField] private GameObject eventNodePrefab;
+    [SerializeField] private GameObject bossNodePrefab;
 
-       void GenerateMap()
-       {
-           map = new List<List<Node>>();
+    [SerializeField] private Transform mapContainer;
+    [SerializeField] private Canvas mapCanvas;
 
-           // Create start node
-           List<Node> firstFloor = new List<Node> { new Node(NodeType.Start, new Vector2(0, 0)) };
-           map.Add(firstFloor);
+    [SerializeField] private GameObject lineContainer;
+    [SerializeField] private GameObject nodeContainer;
 
-           // Generate middle floors
-           for (int floor = 1; floor < numFloors - 1; floor++)
-           {
-               List<Node> currentFloor = new List<Node>();
-               int numPaths = UnityEngine.Random.Range(minPathsPerFloor, maxPathsPerFloor + 1);
 
-               for (int path = 0; path < numPaths; path++)
-               {
-                   NodeType type = GetRandomNodeType();
-                   Node node = new Node(type, new Vector2(path, floor));
-                   currentFloor.Add(node);
-               }
+    [SerializeField] private Color lineColor = Color.white;
+    [SerializeField] private float lineWidth = 2f;
 
-               ConnectNodes(map[floor - 1], currentFloor);
-               map.Add(currentFloor);
-           }
+    private List<List<Node>> map;
 
-           // Create boss node
-           List<Node> lastFloor = new List<Node> { new Node(NodeType.Boss, new Vector2(0, numFloors - 1)) };
-           ConnectNodes(map[numFloors - 2], lastFloor);
-           map.Add(lastFloor);
-       }
+    void Start()
+    {
+        GenerateMap();
+        VisualizeMap();
+        SetupContainers();
+    }
 
-       void ConnectNodes(List<Node> previousFloor, List<Node> currentFloor)
-       {
-           foreach (Node currentNode in currentFloor)
-           {
-               int connections = UnityEngine.Random.Range(1, 3); // 1 or 2 connections
-               List<Node> possibleConnections = new List<Node>(previousFloor);
+    void GenerateMap()
+    {
+        map = new List<List<Node>>();
 
-               for (int i = 0; i < connections && possibleConnections.Count > 0; i++)
-               {
-                   int index = UnityEngine.Random.Range(0, possibleConnections.Count);
-                   Node previousNode = possibleConnections[index];
+        // Create start node
+        List<Node> firstFloor = new List<Node> { new Node(NodeType.Start, new Vector2(0, 0)) };
+        map.Add(firstFloor);
 
-                   currentNode.AddConnection(previousNode);
-                   previousNode.AddConnection(currentNode);
+        // Generate middle floors
+        for (int floor = 1; floor < numFloors - 1; floor++)
+        {
+            List<Node> currentFloor = new List<Node>();
+            int numPaths = UnityEngine.Random.Range(minPathsPerFloor, maxPathsPerFloor + 1);
 
-                   possibleConnections.RemoveAt(index);
-               }
-           }
-       }
+            for (int path = 0; path < numPaths; path++)
+            {
+                NodeType type = GetRandomNodeType();
+                Node node = new Node(type, new Vector2(path, floor));
+                currentFloor.Add(node);
+            }
 
-       NodeType GetRandomNodeType()
-       {
-           // Adjust these probabilities as needed
-           float random = UnityEngine.Random.value;
-           if (random < 0.6f) return NodeType.Enemy;
-           if (random < 0.8f) return NodeType.Event;
-           if (random < 0.9f) return NodeType.RestSite;
-           return NodeType.Merchant;
-       }
-   }
+            ConnectNodes(map[floor - 1], currentFloor);
+            map.Add(currentFloor);
+        }
 
-   public enum NodeType
-   {
-       Start,
-       Enemy,
-       Elite,
-       RestSite,
-       Merchant,
-       Event,
-       Boss
-   }
+        // Create boss node
+        List<Node> lastFloor = new List<Node> { new Node(NodeType.Boss, new Vector2(0, numFloors - 1)) };
+        ConnectNodes(map[numFloors - 2], lastFloor);
+        map.Add(lastFloor);
+    }
 
-   public class Node
-   {
-       public NodeType Type { get; private set; }
-       public Vector2 Position { get; private set; }
-       public List<Node> Connections { get; private set; }
+    void ConnectNodes(List<Node> previousFloor, List<Node> currentFloor)
+    {
+        foreach (Node currentNode in currentFloor)
+        {
+            int connections = UnityEngine.Random.Range(1, 3); // 1 or 2 connections
+            List<Node> possibleConnections = new List<Node>(previousFloor);
 
-       public Node(NodeType type, Vector2 position)
-       {
-           Type = type;
-           Position = position;
-           Connections = new List<Node>();
-       }
+            for (int i = 0; i < connections && possibleConnections.Count > 0; i++)
+            {
+                int index = UnityEngine.Random.Range(0, possibleConnections.Count);
+                Node previousNode = possibleConnections[index];
 
-       public void AddConnection(Node node)
-       {
-           if (!Connections.Contains(node))
-           {
-               Connections.Add(node);
-           }
-       }
-   }
+                currentNode.AddConnection(previousNode);
+                previousNode.AddConnection(currentNode);
+
+                possibleConnections.RemoveAt(index);
+            }
+        }
+    }
+
+    NodeType GetRandomNodeType()
+    {
+        float random = UnityEngine.Random.value;
+        if (random < 0.6f) return NodeType.Enemy;
+        if (random < 0.8f) return NodeType.Event;
+        return NodeType.RestSite;
+    }
+
+    void SetupContainers()
+    {
+        // Create separate containers for lines and nodes if they don't exist
+        if (lineContainer == null)
+        {
+            lineContainer = new GameObject("LineContainer");
+            lineContainer.transform.SetParent(mapContainer, false);
+            lineContainer.AddComponent<RectTransform>();
+        }
+
+        if (nodeContainer == null)
+        {
+            nodeContainer = new GameObject("NodeContainer");
+            nodeContainer.transform.SetParent(mapContainer, false);
+            nodeContainer.AddComponent<RectTransform>();
+        }
+
+        // Ensure the line container is before the node container in hierarchy
+        lineContainer.transform.SetSiblingIndex(0);
+        nodeContainer.transform.SetSiblingIndex(1);
+    }
+
+    void VisualizeMap()
+    {
+        // First, draw all the lines
+        foreach (var floor in map)
+        {
+            foreach (var node in floor)
+            {
+                Vector2 startPos = new Vector2(node.Position.x * nodeSpacing, node.Position.y * floorHeight);
+                foreach (var connection in node.Connections)
+                {
+                    if (connection.Position.y > node.Position.y) // Only draw lines to nodes on the next floor
+                    {
+                        Vector2 endPos = new Vector2(connection.Position.x * nodeSpacing, connection.Position.y * floorHeight);
+                        DrawUILine(startPos, endPos);
+                    }
+                }
+            }
+        }
+
+        // Then, draw all the nodes
+        foreach (var floor in map)
+        {
+            foreach (var node in floor)
+            {
+                GameObject prefab = GetPrefabForNodeType(node.Type);
+                GameObject nodeObject = Instantiate(prefab, nodeContainer.transform);
+                RectTransform rectTransform = nodeObject.GetComponent<RectTransform>();
+                
+                rectTransform.anchoredPosition = new Vector2(node.Position.x * nodeSpacing, node.Position.y * floorHeight);
+                
+                nodeObject.AddComponent<NodeReference>().node = node;
+            }
+        }
+    }
+
+    GameObject GetPrefabForNodeType(NodeType type)
+    {
+        switch (type)
+        {
+            case NodeType.Start: return startNodePrefab;
+            case NodeType.Enemy: return enemyNodePrefab;
+            case NodeType.RestSite: return restSiteNodePrefab;
+            case NodeType.Event: return eventNodePrefab;
+            case NodeType.Boss: return bossNodePrefab;
+            default: return enemyNodePrefab; // Default case
+        }
+    }
+
+    void DrawUILine(Vector2 start, Vector2 end)
+    {
+        GameObject lineObj = new GameObject("Line");
+        lineObj.transform.SetParent(lineContainer.transform, false);
+        Image lineImage = lineObj.AddComponent<Image>();
+        lineImage.color = lineColor;
+
+        RectTransform rectTransform = lineObj.GetComponent<RectTransform>();
+        Vector2 dir = (end - start).normalized;
+        float distance = Vector2.Distance(start, end);
+
+        rectTransform.anchorMin = rectTransform.anchorMax = Vector2.zero;
+        rectTransform.sizeDelta = new Vector2(distance, lineWidth);
+        rectTransform.anchoredPosition = start + dir * distance * 0.5f;
+        rectTransform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+    }
+}
+
+public enum NodeType
+{
+    Start,
+    Enemy,
+    RestSite,
+    Event,
+    Boss
+}
+
+public class Node
+{
+    public NodeType Type { get; private set; }
+    public Vector2 Position { get; private set; }
+    public List<Node> Connections { get; private set; }
+
+    public Node(NodeType type, Vector2 position)
+    {
+        Type = type;
+        Position = position;
+        Connections = new List<Node>();
+    }
+
+    public void AddConnection(Node node)
+    {
+        if (!Connections.Contains(node))
+        {
+            Connections.Add(node);
+        }
+    }
+}
+
+// Add this new class to store Node reference in GameObjects
+public class NodeReference : MonoBehaviour
+{
+    public Node node;
+}
