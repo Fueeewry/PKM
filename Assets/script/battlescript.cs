@@ -31,7 +31,7 @@ public class battlescript : MonoBehaviour
 
     bool interactionOnGoing = false;
 
-    int shieldvalue = 0;
+    int shieldvalue = 0, avoidattack = 0, nextturnshieldvalue = 0, nextturnenergyvalue = 0;
 
     public List<GameObject> enemylist = new List<GameObject>();
 
@@ -244,9 +244,16 @@ public class battlescript : MonoBehaviour
 
     public void trueStartTurn(){
         killedanenemy();
-        shieldvalue = 0;
-        shieldtext.text = shieldvalue.ToString();
-        shieldobject.SetActive(false);
+        if(nextturnshieldvalue >= 0){
+            shieldvalue = nextturnshieldvalue;
+            shieldtext.text = shieldvalue.ToString();
+            shieldobject.SetActive(true);
+        }else{
+            shieldvalue = 0;
+            shieldtext.text = shieldvalue.ToString();
+            shieldobject.SetActive(false);
+        }
+        nextturnshieldvalue = 0;
         StartCoroutine(refreshEnergy());
     }
 
@@ -268,24 +275,25 @@ public class battlescript : MonoBehaviour
         interactionOnGoing = false;
     }
 
+    public void discardtodrawpile(){
+        while(phaseArray[idx].discardpile.Count > 0){
+            RectTransform a = phaseArray[idx].discardpile[0];
+            phaseArray[idx].drawpile.Add(a);
+            phaseArray[idx].discardpile.Remove(a);
+            a.SetParent(phaseArray[idx].drawpileTrans, false);
+        }
+    }
+
     public void startTurn(){
         for(int i = 0; i < 5; i++){
             if(phaseArray[idx].drawpile.Count <= 0){
-                if(phaseArray[idx].discardpile.Count <= 0){
-                    break;
-                }
-                while(phaseArray[idx].discardpile.Count > 0){
-                    RectTransform a = phaseArray[idx].discardpile[0];
-                    phaseArray[idx].drawpile.Add(a);
-                    phaseArray[idx].discardpile.Remove(a);
-                    a.SetParent(phaseArray[idx].drawpileTrans, false);
-                }
+                discardtodrawpile();
             }
             RectTransform b = phaseArray[idx].drawpile[Random.Range(0, phaseArray[idx].drawpile.Count)];
             b.gameObject.GetComponent<cardlogic>().turnRaycast(true);
             phaseArray[idx].drawpile.Remove(b);
             phaseArray[idx].cardInHandList.Add(b);
-            b.SetParent(phaseArray[idx].handTrans, true);
+            b.SetParent(phaseArray[idx].handTrans, false);
             b.sizeDelta = new Vector2 (100, 125);
             b.localScale = new Vector3(1,1,1);
             b.anchorMax = new Vector2 (0.5f, 0.5f);
@@ -328,6 +336,10 @@ public class battlescript : MonoBehaviour
         healthbar.value += heal;
     }
     public void damaged(int damage){
+        if(avoidattack > 0){
+            avoidattack--;
+            return;
+        }
         anim.Play("getHit");
         if(shieldvalue > 0){
             if(shieldvalue > damage){
@@ -341,6 +353,20 @@ public class battlescript : MonoBehaviour
                 return;
             }
         }
+        healthbar.value -= damage;
+        healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        battlescript.Instance.showEffect(damage, transform.position);
+
+        if(healthbar.value <= 0){
+            dead();
+        }
+    }
+    public void removehealth(int damage){
+        if(avoidattack > 0){
+            avoidattack--;
+            return;
+        }
+        anim.Play("getHit");
         healthbar.value -= damage;
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
         battlescript.Instance.showEffect(damage, transform.position);
@@ -458,27 +484,292 @@ public class battlescript : MonoBehaviour
                 StartCoroutine(goToEffectAnim(phaseArray[i].drawpileTrans.position, phaseArray[i].handTrans.position));
             }
         }
+
+        if((function.Equals("riskymove")||function.Equals("backwarddefense")||function.Equals("clone")) && !effect.Equals("") && enemyscript!=null){
+            Invoke(function, 0.1f);
+
+            for(int i = 0;i < cardselectedlist.Length; i++){
+                Transform b = cardselectedlist[i].transform.GetChild(0);
+                if(b != null){
+                    RectTransform a = b.gameObject.GetComponent<RectTransform>();
+                    phaseArray[i].discardpile.Add(a);
+                    phaseArray[i].cardInHandList.Remove(a);
+                    a.SetParent(phaseArray[i].discardpileTrans, false);
+                    StartCoroutine(goToEffectAnim(phaseArray[i].drawpileTrans.position, phaseArray[i].handTrans.position));
+                }
+            }
+        }
+
+        if(variable!=-1 && (function.Equals("damagetoshield")||function.Equals("weaken")||function.Equals("lifesteal")||function.Equals("stun")||function.Equals("revengestrike")) && enemyscript!=null){
+            Invoke(function, 0.1f);
+
+            for(int i = 0;i < cardselectedlist.Length; i++){
+                Transform b = cardselectedlist[i].transform.GetChild(0);
+                if(b != null){
+                    RectTransform a = b.gameObject.GetComponent<RectTransform>();
+                    phaseArray[i].discardpile.Add(a);
+                    phaseArray[i].cardInHandList.Remove(a);
+                    a.SetParent(phaseArray[i].discardpileTrans, false);
+                    StartCoroutine(goToEffectAnim(phaseArray[i].drawpileTrans.position, phaseArray[i].handTrans.position));
+                }
+            }
+        }
     }
+
+    int[] cardvalue = {6, 3, 3, 3}; //HARUS SAMA
+    static int[] staticcardvalue = {6, 3, 3, 3};
 
     //============================================================= FUNCTION
 
-    public void repeater(){
+    void repeater(){
         for(int i = 0; i < variable; i++){
             Invoke(effect, 0.1f);
         }
         removeAll();
     }
 
+    void outputcast(){
+        Invoke(effect, 0.1f);
+        removeAll();
+    }
+
+    void switchcast(){ //update dari sini
+        switch(variable){
+            case 1:
+                Invoke("cyberattack", 0.1f);
+                break;
+            case 2:
+                Invoke("heal", 0.1f);
+                break;
+            case 3:
+                Invoke("shield", 0.1f);
+                break;
+        }
+        removeAll();
+    }
+
+    void multiplier(){
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] *= variable;
+        }
+        Invoke(effect, 0);
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] = staticcardvalue[i];
+        }
+        removeAll();
+    }
+
+    void recursive(){
+        //do something
+        removeAll();
+    }
+
+    void ifelse(){
+        RectTransform a = null;
+        if(variable > 3){
+            foreach(phaseClass b in phaseArray){
+                if(b.drawpile.Count <= 0){
+                    discardtodrawpile();
+                }
+                a = b.drawpile[Random.Range(0, b.drawpile.Count)];
+                a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
+                b.drawpile.Remove(a);
+                b.cardInHandList.Add(a);
+                a.SetParent(b.handTrans, true);
+            }
+        }
+        foreach(phaseClass b in phaseArray){
+            if(b.drawpile.Count <= 0){
+                discardtodrawpile();
+            }
+            a = b.drawpile[Random.Range(0, b.drawpile.Count)];
+            a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
+            b.drawpile.Remove(a);
+            b.cardInHandList.Add(a);
+            a.SetParent(b.handTrans, true);
+        }
+        removeAll();
+    }
+
+    void multiply(){
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] += variable * 2;
+        }
+        Invoke(effect, 0);
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] = staticcardvalue[i];
+        }
+        removeAll();
+    }
+
+    void riskymove(){
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] *= 2;
+        }
+        Invoke(effect, 0);
+        switch(effect){
+            case "cyberattack":
+                damaged(cardvalue[0] / 2);
+                break;
+            case "heal":
+                damaged(cardvalue[1] / 2);
+                break;
+            case "shield":
+                damaged(cardvalue[2] / 2);
+                break;
+            case "poison":
+                damaged(cardvalue[3] / 2);
+                break;
+        }
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] = staticcardvalue[i];
+        }
+        removeAll();
+    }
+
+    void backwarddefense(){
+        for(int i = 0; i<cardvalue.Length; i++){
+            cardvalue[i] += shieldvalue / 2;
+        }
+        Invoke(effect, 0);
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] = staticcardvalue[i];
+        }
+        removeAll();
+    }
+
+    void defensepreparation(){
+        nextturnshieldvalue += 8 + variable;
+        Invoke(effect, 0);
+        removeAll();
+    }
+
+    void exponential(){
+        for(int i = 0; i<cardvalue.Length; i++){
+            for(int j = 0; j<variable; j++){
+                cardvalue[i] *= cardvalue[i];
+            }
+        }
+        Invoke(effect, 0);
+        for(int i = 0; i < cardvalue.Length; i++){
+            cardvalue[i] = staticcardvalue[i];
+        }
+        removeAll();
+    }
+
+    void redraw(){
+        for(int i =0; i < variable / 2; i++){
+            GameObject a = Instantiate(energyObject, energySlotTrans);
+            energyObjectList.Push(a);
+            if(i==maxEnergy-1 || i == 0){
+                a.transform.localPosition += new Vector3((maxEnergy-1-i) * 40, i * 40, 0);
+            }else{
+                a.transform.localPosition += new Vector3((maxEnergy-1-i) * 55, i * 55, 0);
+            }
+        }
+        for(int i =0; i < variable; i++){
+            foreach(phaseClass b in phaseArray){
+                if(b.drawpile.Count <= 0){
+                    discardtodrawpile();
+                }
+                RectTransform a = b.drawpile[Random.Range(0, b.drawpile.Count)];
+                a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
+                b.drawpile.Remove(a);
+                b.cardInHandList.Add(a);
+                a.SetParent(b.handTrans, true);
+            }
+        }
+        removeAll();
+    }
+
+    void damagetoshield(){
+        soundcontroller.Instance.playsound(3);
+        enemyscript.damaged(variable);
+        getshield(variable);
+        removeAll();
+    }
+
+    void weaken(){
+        //enemyscript.reducedamageby(..., variable);
+        removeAll();
+    }
+
+    void lifesteal(){
+        getheal(enemyscript.stealhealth(variable));
+        removeAll();
+    }
+
+    void stun(){
+        enemyscript.stunfor(variable);
+        removeAll();
+    }
+
+    void chargeup(){
+        nextturnenergyvalue += 1 + variable;
+        Invoke(effect, 0.1f);
+        removeAll();
+    }
+
+    void clone(){
+        avoidattack++;
+        Invoke(effect, 0.1f);
+        removeAll();
+    }
+
+    void recklessforloop(){
+        for(int i = 0; i < variable; i++){
+            Invoke(effect, 0.1f);
+            switch(effect){
+            case "cyberattack":
+                damaged(cardvalue[0] / 3);
+                break;
+            case "heal":
+                damaged(cardvalue[1] / 3);
+                break;
+            case "shield":
+                damaged(cardvalue[2] / 3);
+                break;
+            case "poison":
+                damaged(cardvalue[3] / 3);
+                break;
+            }
+        }
+        removeAll();
+    }
+
+    void revengestrike(){
+        enemyscript.damaged(variable * ((int)healthbar.maxValue - (int)healthbar.value));
+        removeAll();
+    }
+
+    void sacrificialstrike(){
+        enemyscript.damaged(8 + variable);
+        removehealth(variable);
+        removeAll();
+    }
+
     //============================================================= OUTPUT / EFFECT
 
-    public void cyberattack(){
+    void cyberattack(){
         soundcontroller.Instance.playsound(3);
-        enemyscript.damaged(6);
+        enemyscript.damaged(cardvalue[0]);
+    }
+
+    void heal(){
+        getheal(cardvalue[1]);
+    }
+
+    void shield(){
+        getshield(cardvalue[2]);
+    }
+
+    void poison(){
+        //enemyscript.addpoison(cardvalue[3]);
     }
 
     //============================================================= RELIC
 
-    public void getmaxhealthup(){
+    void getmaxhealthup(){
         healthbar.maxValue += 6;
         healthbar.value += 6;
     }

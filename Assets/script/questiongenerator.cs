@@ -41,7 +41,7 @@ public class questiongenerator : MonoBehaviour
                 float wronganswer = 0;
                 do{
                     wronganswer = answer + Random.Range(-3, 3);
-                }while(wronganswerlist.Contains(wronganswer));
+                }while(wronganswerlist.Contains(wronganswer) && wronganswer == answer);
                 wronganswerlist.Add(wronganswer);
                 go.GetComponent<answerlogic>().init(this);
                 go.transform.GetChild(0).GetComponent<TMP_Text>().text = wronganswer.ToString();

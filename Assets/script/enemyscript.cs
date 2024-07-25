@@ -13,7 +13,7 @@ public class enemyscript : MonoBehaviour, IDamageable
     public List<movevariation> variation = new List<movevariation>();
     Animator anim;
 
-    int shieldvalue = 0;
+    int shieldvalue = 0, stunned;
 
     void Start(){
         //bs = GameObject.Find("Player").GetComponent<battlescript>();
@@ -54,6 +54,30 @@ public class enemyscript : MonoBehaviour, IDamageable
             Destroy(this.gameObject, 0.4f);
         }
     }
+    public int stealhealth(int damage){
+        int orihealth = (int)healthbar.value;
+        healthbar.value -= damage;
+        healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        battlescript.Instance.showEffect(damage, transform.position);
+
+        if(healthbar.value <= 0){
+            battlescript.Instance.killedanenemy();
+            enemyspawner.Instance.enemyInstantiatedList.Remove(this);
+            if(anim!=null){
+                anim.Play("enemydead");
+            }
+            if(instantiatedIntent != null){
+                Destroy(instantiatedIntent);
+            }
+            Destroy(this.gameObject, 0.4f);
+        }
+
+        return orihealth - (int)healthbar.value;
+    }
+
+    public void stunfor(int value){
+        stunned += value;
+    }
 
     movevariation mv;
     GameObject instantiatedIntent;
@@ -66,6 +90,10 @@ public class enemyscript : MonoBehaviour, IDamageable
     }
 
     public void prepareattack(){
+        if(stunned > 0){
+            stunned--;
+            return;
+        }
         if(instantiatedIntent != null){
             Destroy(instantiatedIntent);
         }

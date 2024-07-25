@@ -9,16 +9,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1706282693157267237, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
+      propertyPath: cost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706282693157267237, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: type
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1706282693157267237, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: function
-      value: forloop
+      value: outputcast
       objectReference: {fileID: 0}
     - target: {fileID: 2874445336209900594, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Name
-      value: repeater1
+      value: repeater1 1
       objectReference: {fileID: 0}
     - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Pivot.x

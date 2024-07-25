@@ -8,4 +8,6 @@ public interface IDamageable
     void move();
     void prepareattack();
     bool checkstillalive();
+    int stealhealth(int damage);
+    void stunfor(int value);
 }
