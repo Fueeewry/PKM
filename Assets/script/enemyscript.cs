@@ -51,7 +51,7 @@ public class enemyscript : MonoBehaviour, IDamageable
             if(instantiatedIntent != null){
                 Destroy(instantiatedIntent);
             }
-            Destroy(this.gameObject, 0.5f);
+            Destroy(this.gameObject, 0.4f);
         }
     }
 
@@ -86,12 +86,14 @@ public class enemyscript : MonoBehaviour, IDamageable
     }
 
     void atk(){
+        soundcontroller.Instance.playsound(8);
         for(int i = 0; i<mv.multiplicative;i++){
             battlescript.Instance.damaged(mv.value);
         }
     }
 
     void def(){
+        soundcontroller.Instance.playsound(0);
         for(int i = 0; i<mv.multiplicative;i++){
             shieldobject.SetActive(true);
             shieldvalue += mv.value;

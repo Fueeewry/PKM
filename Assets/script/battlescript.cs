@@ -209,6 +209,7 @@ public class battlescript : MonoBehaviour
     public void trueEndTurn(){
         interactionOnGoing = true;
         StartCoroutine(trueEndTurnCoroutine());
+        soundcontroller.Instance.playsound(5);
         for(int i = 0;i < cardselectedlist.Length; i++){
             if(cardselectedlist[i].transform.childCount > 1){
                 RectTransform a = cardselectedlist[i].transform.GetChild(1).gameObject.GetComponent<RectTransform>();
@@ -222,6 +223,7 @@ public class battlescript : MonoBehaviour
 
     IEnumerator trueEndTurnCoroutine(){
         List<IDamageable> enemyInstantiatedList = GameObject.Find("enemyspawner").GetComponent<enemyspawner>().enemyInstantiatedList;
+        soundcontroller.Instance.playsound(5);
         foreach(IDamageable a in enemyInstantiatedList){
             enemyInstantiatedList.RemoveAll(item => item == null);
             yield return new WaitForSeconds(0.5f);
@@ -252,6 +254,7 @@ public class battlescript : MonoBehaviour
         energy = maxEnergy;
         energytxt.text = energy.ToString();
         energyObjectList.Clear();
+        soundcontroller.Instance.playsound(5);
         for(int i = maxEnergy-1; i>=0; i--){
             yield return new WaitForSeconds(0.05f);
             GameObject a = Instantiate(energyObject, energySlotTrans);
@@ -292,6 +295,7 @@ public class battlescript : MonoBehaviour
     }
 
     public void endTurn(){
+        soundcontroller.Instance.playsound(5);
         foreach(phaseClass b in phaseArray){
             while(b.cardInHandList.Count > 0){
                 RectTransform a = b.cardInHandList[0];
@@ -316,9 +320,11 @@ public class battlescript : MonoBehaviour
         
     }
     public void gethealrestsite(){
+        soundcontroller.Instance.playsound(6);
         healthbar.value += healthbar.value * 0.3f;
     }
     public void getheal(int heal){
+        soundcontroller.Instance.playsound(6);
         healthbar.value += heal;
     }
     public void damaged(int damage){
@@ -434,6 +440,7 @@ public class battlescript : MonoBehaviour
     }
 
     public void getshield(int value){
+        soundcontroller.Instance.playsound(0);
         shieldobject.SetActive(true);
         shieldvalue += value;
         shieldtext.text = shieldvalue.ToString();
@@ -464,7 +471,8 @@ public class battlescript : MonoBehaviour
 
     //============================================================= OUTPUT / EFFECT
 
-    public void fireball(){
+    public void cyberattack(){
+        soundcontroller.Instance.playsound(3);
         enemyscript.damaged(6);
     }
 

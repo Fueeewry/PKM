@@ -49,7 +49,8 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         StopAllCoroutines();
-        anim.SetTrigger("Highlighted");
+        anim.SetBool("Highlighted", true);
+        soundcontroller.Instance.playsound(7);
         inside = true;
         childOrder = transform.GetSiblingIndex();
         transform.SetSiblingIndex(transform.parent.childCount);
@@ -70,12 +71,12 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void disable(){
         StopAllCoroutines();
         line.enabled = false;
-        anim.SetTrigger("Disabled");
+        anim.SetBool("Highlighted", false);
+        //anim.SetTrigger("Disabled");
         transform.SetSiblingIndex(childOrder);
         //child.localRotation = Quaternion.Euler(0,0,0);
     }
     public void turnRaycast(bool a){
-        Debug.Log("testt");
         transform.rotation = Quaternion.Euler(0,0,0);
         transform.localPosition = new Vector3(0,0,0);
         image.raycastTarget = a;
