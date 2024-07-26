@@ -287,7 +287,11 @@ public class battlescript : MonoBehaviour
     public void startTurn(){
         for(int i = 0; i < 5; i++){
             if(phaseArray[idx].drawpile.Count <= 0){
-                discardtodrawpile();
+                if(phaseArray[idx].discardpile.Count > 0){
+                    discardtodrawpile();
+                }else{
+                    break;
+                }
             }
             RectTransform b = phaseArray[idx].drawpile[Random.Range(0, phaseArray[idx].drawpile.Count)];
             b.gameObject.GetComponent<cardlogic>().turnRaycast(true);
@@ -568,8 +572,12 @@ public class battlescript : MonoBehaviour
         RectTransform a = null;
         if(variable > 3){
             foreach(phaseClass b in phaseArray){
-                if(b.drawpile.Count <= 0){
-                    discardtodrawpile();
+                if(phaseArray[idx].drawpile.Count <= 0){
+                    if(phaseArray[idx].discardpile.Count > 0){
+                        discardtodrawpile();
+                    }else{
+                        break;
+                    }
                 }
                 a = b.drawpile[Random.Range(0, b.drawpile.Count)];
                 a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
@@ -579,8 +587,12 @@ public class battlescript : MonoBehaviour
             }
         }
         foreach(phaseClass b in phaseArray){
-            if(b.drawpile.Count <= 0){
-                discardtodrawpile();
+            if(phaseArray[idx].drawpile.Count <= 0){
+                if(phaseArray[idx].discardpile.Count > 0){
+                    discardtodrawpile();
+                }else{
+                    break;
+                }
             }
             a = b.drawpile[Random.Range(0, b.drawpile.Count)];
             a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
@@ -669,8 +681,12 @@ public class battlescript : MonoBehaviour
         }
         for(int i =0; i < variable; i++){
             foreach(phaseClass b in phaseArray){
-                if(b.drawpile.Count <= 0){
-                    discardtodrawpile();
+                if(phaseArray[idx].drawpile.Count <= 0){
+                    if(phaseArray[idx].discardpile.Count > 0){
+                        discardtodrawpile();
+                    }else{
+                        break;
+                    }
                 }
                 RectTransform a = b.drawpile[Random.Range(0, b.drawpile.Count)];
                 a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
