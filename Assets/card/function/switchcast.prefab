@@ -20,9 +20,13 @@ PrefabInstance:
       propertyPath: function
       value: switchcast
       objectReference: {fileID: 0}
+    - target: {fileID: 2506967050257329564, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3b1fa2c39bec67844818b37c46ec1abc, type: 3}
     - target: {fileID: 2874445336209900594, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Name
-      value: repeater1 2
+      value: switchcast
       objectReference: {fileID: 0}
     - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Pivot.x

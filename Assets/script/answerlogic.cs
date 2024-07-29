@@ -12,7 +12,9 @@ public class answerlogic : MonoBehaviour, IPointerClickHandler
         // if(correctanswer == true){
         //     GameObject.Find("Player").enableRewards(correctanswer);
         // }
-        GameObject.Find("Player").GetComponent<battlescript>().enableRewards(correctanswer);
+        if(correctanswer == true){
+            GameObject.Find("Player").GetComponent<battlescript>().enableRewards(false);
+        }
         transform.parent.gameObject.SetActive(false);
     }
 

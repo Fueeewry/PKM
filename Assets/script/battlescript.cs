@@ -525,7 +525,7 @@ public class battlescript : MonoBehaviour
 
     //============================================================= FUNCTION
 
-    void repeater(){
+    void forloop(){
         for(int i = 0; i < variable; i++){
             Invoke(effect, 0.1f);
         }
@@ -537,7 +537,7 @@ public class battlescript : MonoBehaviour
         removeAll();
     }
 
-    void switchcast(){ //update dari sini
+    void switchcast(){
         switch(variable){
             case 1:
                 Invoke("cyberattack", 0.1f);

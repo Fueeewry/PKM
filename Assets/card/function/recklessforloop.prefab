@@ -9,20 +9,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1706282693157267237, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
+      propertyPath: cost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706282693157267237, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: type
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1706282693157267237, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: function
-      value: forloop
+      value: recklessforloop
       objectReference: {fileID: 0}
     - target: {fileID: 2506967050257329564, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: adbf2927e0e4c174695ba3c880770800, type: 3}
+      objectReference: {fileID: 21300000, guid: 8c47c65eac134ab47a1b95e6c4935b1f, type: 3}
     - target: {fileID: 2874445336209900594, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Name
-      value: forloop
+      value: recklessforloop
       objectReference: {fileID: 0}
     - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Pivot.x
