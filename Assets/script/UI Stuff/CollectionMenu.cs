@@ -13,7 +13,7 @@ public class CollectionMenu : MonoBehaviour
     [SerializeField] private GameObject content;
     [SerializeField] private GameObject buttonPrefab;
 
-    private List<cardlogic> cards = new List<cardlogic>();
+    private List<CollectionItemHolder> cards = new List<CollectionItemHolder>();
     private List<GameObject> selections = new List<GameObject>();
 
     private void OnEnable()
@@ -32,6 +32,11 @@ public class CollectionMenu : MonoBehaviour
 
         cards = CollectionManager.Instance.ReadAllCardData();
         GenerateSelectionButton();
+
+        if(cardImage.sprite == null)
+        {
+            ShowCardInfo(0);
+        }
     }
 
     private void GenerateSelectionButton()
@@ -46,7 +51,7 @@ public class CollectionMenu : MonoBehaviour
             Button button = selectionImage.GetComponent<Button>();
             if(selectionImage != null)
             {
-                selectionImage = cards[i].image;
+                selectionImage.sprite = cards[i].cardSprite;
             }
             if(button != null)
             {
@@ -57,7 +62,7 @@ public class CollectionMenu : MonoBehaviour
 
     private void ShowCardInfo(int index)
     {
-        cardImage = cards[index].image;
+        cardImage.sprite = cards[index].cardSprite;
         string infoText = GenerateInfoText(index);
         cardInfo.text = infoText;
     }
@@ -65,18 +70,18 @@ public class CollectionMenu : MonoBehaviour
     private string GenerateInfoText(int index)
     {
         string text = "";
-        text += $"Type : {cards[index].type}\n";
-        text += $"Cost : {cards[index].cost}\n";
-        switch (cards[index].type)
+        text += $"Type : {cards[index].cardLogic.type}\n";
+        text += $"Cost : {cards[index].cardLogic.cost}\n";
+        switch (cards[index].cardLogic.type)
         {
             case cardtype.effect:
-                text += $"Effect : {cards[index].effect}\n";
+                text += $"Effect : {cards[index].cardLogic.effect}\n";
                 break;
             case cardtype.function:
-                text += $"Function : {cards[index].function}\n";
+                text += $"Function : {cards[index].cardLogic.function}\n";
                 break;
             case cardtype.variable:
-                text += $"Variable : {cards[index].variable}\n";
+                text += $"Variable : {cards[index].cardLogic.variable}\n";
                 break;
         }
         return text;
