@@ -226,7 +226,7 @@ RectTransform:
   m_GameObject: {fileID: 2874445336209900594}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6883721469077333038}
@@ -235,7 +235,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 150}
+  m_SizeDelta: {x: 152.5, y: 217}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3968479517960027548
 CanvasRenderer:
@@ -264,6 +264,9 @@ MonoBehaviour:
   variable: 0
   cost: 1
   image: {fileID: 2506967050257329564}
+  cursorTexture: {fileID: 2800000, guid: 4c4f67701aff4924692232378ff5f0f8, type: 3}
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}
 --- !u!95 &1538662810674541441
 Animator:
   serializedVersion: 5

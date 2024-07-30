@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: ccdade7190486194aab1ec4acdac0178, type: 3}
     - target: {fileID: 2874445336209900594, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Name
-      value: effect1
+      value: cyberatk
       objectReference: {fileID: 0}
     - target: {fileID: 4144189231589629130, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Color.b
@@ -78,11 +78,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 152.5
       objectReference: {fileID: 0}
     - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 217
+      objectReference: {fileID: 0}
+    - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 7112489433103333299, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_LocalPosition.x

@@ -15,6 +15,8 @@ public class enemyspawner : MonoBehaviour
 
     public List<enemycombination> enemyCombinationList;
     public List<IDamageable> enemyInstantiatedList = new List<IDamageable>();
+    public GameObject bossobject, droneboss;
+    public bool isboss = false;
     void Start()
     {
         StartCoroutine(wait());
@@ -22,13 +24,26 @@ public class enemyspawner : MonoBehaviour
 
     IEnumerator wait(){
         yield return new WaitForSeconds(0.25f);
-        List<GameObject> enemylist = battlescript.Instance.enemylist;
-        int[] a = enemyCombinationList[Random.Range(0, enemyCombinationList.Count)].combination;
-        for(int i = 0; i<a.Length;i++){
-            GameObject b = Instantiate(enemylist[a[i]], transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
+        if(isboss == false){
+            List<GameObject> enemylist = battlescript.Instance.enemylist;
+            int[] a = enemyCombinationList[Random.Range(0, enemyCombinationList.Count)].combination;
+            for(int i = 0; i<a.Length;i++){
+                GameObject b = Instantiate(enemylist[a[i]], transform.position + new Vector3((i + 1) * 2 , i * -2, 0), Quaternion.Euler(0,0,0));
+                enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
+            }
+            InvokeRepeating("checkbattledone", 0.1f, 0.1f);
+        }else{
+            int i = 0;
+            GameObject b = Instantiate(droneboss, transform.position + new Vector3((i + 1) * 2 , 0, 0), Quaternion.Euler(0,0,0));
             enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
+            i++;
+            b = Instantiate(bossobject, transform.position + new Vector3((i + 1) * 2 , 0, 0), Quaternion.Euler(0,0,0));
+            enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
+            i++;
+            b = Instantiate(droneboss, transform.position + new Vector3((i + 1) * 2 , 0, 0), Quaternion.Euler(0,0,0));
+            enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
+            InvokeRepeating("checkbattledone", 0.1f, 0.1f);
         }
-        InvokeRepeating("checkbattledone", 0.1f, 0.1f);
     }
 
     public void checkbattledone(){

@@ -16,6 +16,12 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     bool dragging = false, inside = false;
     Animator anim;
     public Image image;
+
+    public Texture2D cursorTexture;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
+
+
     
     void Start(){
         child = transform.GetChild(0);
@@ -47,6 +53,7 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         StopAllCoroutines();
+        cursorcontroller.Instance.EnterHover();
         anim.SetBool("Highlighted", true);
         soundcontroller.Instance.playsound(7);
         inside = true;
@@ -60,6 +67,7 @@ public class cardlogic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerExit(PointerEventData pointerEventData)
     {
         inside = false;
+        cursorcontroller.Instance.ExitHover();
         if(dragging == false){
             disable();
             //StartCoroutine(rotate1());

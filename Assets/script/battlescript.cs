@@ -19,9 +19,8 @@ public class battlescript : MonoBehaviour
     public phaseClass[] phaseArray;
     public GameObject[] cardselectedlist, phaseObject;
     public Transform[] deckshows;
-    public Stack<GameObject> energyObjectList = new Stack<GameObject>();
-    public GameObject goToEffect, energyObject, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject;
-    public Transform arrow, energySlotTrans, rewardGrid, relicgrid;
+    public GameObject goToEffect, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject;
+    public Transform arrow, rewardGrid, relicgrid;
     public int maxEnergy = 3, energy = 3, idx = 0;
     IDamageable enemyscript;
     public Slider healthbar;
@@ -29,8 +28,8 @@ public class battlescript : MonoBehaviour
     public List<relicvariant> relicVariantList = new List<relicvariant>();
     public Animator anim;
 
-    bool interactionOnGoing = false;
-
+    bool interactionOnGoing = false, candraw = false;
+    
     int shieldvalue = 0, avoidattack = 0, nextturnshieldvalue = 0, nextturnenergyvalue = 0;
 
     public List<GameObject> enemylist = new List<GameObject>();
@@ -83,8 +82,8 @@ public class battlescript : MonoBehaviour
     IEnumerator wait(){
         yield return new WaitForSeconds(0.2f);
         startTurn();
-        StartCoroutine(refreshEnergy());
-        yield return new WaitForSeconds(0.2f);
+        refreshEnergy();
+        yield return new WaitForSeconds(0.3f);
         GameObject a = GameObject.FindGameObjectWithTag("enemy");
         if(a != null){
             arrow.gameObject.SetActive(true);
@@ -103,9 +102,6 @@ public class battlescript : MonoBehaviour
         if(energy>=cardCost){
             energy -= cardCost;
             energytxt.text = energy.ToString();
-            if(energyObjectList.Count > 0){
-                Destroy(energyObjectList.Pop());
-            }
         }else{
             return false;
         }
@@ -208,6 +204,7 @@ public class battlescript : MonoBehaviour
 
     public void trueEndTurn(){
         interactionOnGoing = true;
+        candraw = true;
         StartCoroutine(trueEndTurnCoroutine());
         soundcontroller.Instance.playsound(5);
         for(int i = 0;i < cardselectedlist.Length; i++){
@@ -244,7 +241,7 @@ public class battlescript : MonoBehaviour
 
     public void trueStartTurn(){
         killedanenemy();
-        if(nextturnshieldvalue >= 0){
+        if(nextturnshieldvalue > 0){
             shieldvalue = nextturnshieldvalue;
             shieldtext.text = shieldvalue.ToString();
             shieldobject.SetActive(true);
@@ -254,24 +251,13 @@ public class battlescript : MonoBehaviour
             shieldobject.SetActive(false);
         }
         nextturnshieldvalue = 0;
-        StartCoroutine(refreshEnergy());
+        refreshEnergy();
     }
 
-    IEnumerator refreshEnergy(){
+    void refreshEnergy(){
         energy = maxEnergy;
         energytxt.text = energy.ToString();
-        energyObjectList.Clear();
         soundcontroller.Instance.playsound(5);
-        for(int i = maxEnergy-1; i>=0; i--){
-            yield return new WaitForSeconds(0.05f);
-            GameObject a = Instantiate(energyObject, energySlotTrans);
-            energyObjectList.Push(a);
-            if(i==maxEnergy-1 || i == 0){
-                a.transform.localPosition += new Vector3((maxEnergy-1-i) * 40, i * 40, 0);
-            }else{
-                a.transform.localPosition += new Vector3((maxEnergy-1-i) * 55, i * 55, 0);
-            }
-        }
         interactionOnGoing = false;
     }
 
@@ -308,14 +294,6 @@ public class battlescript : MonoBehaviour
 
     public void endTurn(){
         soundcontroller.Instance.playsound(5);
-        foreach(phaseClass b in phaseArray){
-            while(b.cardInHandList.Count > 0){
-                RectTransform a = b.cardInHandList[0];
-                b.discardpile.Add(a);
-                b.cardInHandList.Remove(a);
-                a.SetParent(b.discardpileTrans, false);
-            }   
-        }
         changePhase();
     }
 
@@ -579,6 +557,9 @@ public class battlescript : MonoBehaviour
                         break;
                     }
                 }
+                if(candraw == false){
+                    break;
+                }
                 a = b.drawpile[Random.Range(0, b.drawpile.Count)];
                 a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
                 b.drawpile.Remove(a);
@@ -593,6 +574,9 @@ public class battlescript : MonoBehaviour
                 }else{
                     break;
                 }
+            }
+            if(candraw == false){
+                break;
             }
             a = b.drawpile[Random.Range(0, b.drawpile.Count)];
             a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
@@ -671,13 +655,8 @@ public class battlescript : MonoBehaviour
 
     void redraw(){
         for(int i =0; i < variable / 2; i++){
-            GameObject a = Instantiate(energyObject, energySlotTrans);
-            energyObjectList.Push(a);
-            if(i==maxEnergy-1 || i == 0){
-                a.transform.localPosition += new Vector3((maxEnergy-1-i) * 40, i * 40, 0);
-            }else{
-                a.transform.localPosition += new Vector3((maxEnergy-1-i) * 55, i * 55, 0);
-            }
+            energy++;
+            energytxt.text = energy.ToString();
         }
         for(int i =0; i < variable; i++){
             foreach(phaseClass b in phaseArray){
@@ -688,6 +667,9 @@ public class battlescript : MonoBehaviour
                         break;
                     }
                 }
+                if(candraw == false){
+                    break;
+                }
                 RectTransform a = b.drawpile[Random.Range(0, b.drawpile.Count)];
                 a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
                 b.drawpile.Remove(a);
@@ -695,6 +677,7 @@ public class battlescript : MonoBehaviour
                 a.SetParent(b.handTrans, true);
             }
         }
+        candraw = false;
         removeAll();
     }
 
@@ -706,7 +689,7 @@ public class battlescript : MonoBehaviour
     }
 
     void weaken(){
-        //enemyscript.reducedamageby(..., variable);
+        enemyscript.reducedamageby(0.2f, variable);
         removeAll();
     }
 

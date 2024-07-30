@@ -10,4 +10,5 @@ public interface IDamageable
     bool checkstillalive();
     int stealhealth(int damage);
     void stunfor(int value);
+    void reducedamageby(float a, int b);
 }

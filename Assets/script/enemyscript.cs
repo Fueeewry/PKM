@@ -13,7 +13,9 @@ public class enemyscript : MonoBehaviour, IDamageable
     public List<movevariation> variation = new List<movevariation>();
     Animator anim;
 
-    int shieldvalue = 0, stunned;
+    int shieldvalue = 0, stunned, weakentill = 0;
+
+    float weakenvalue = 1;
 
     void Start(){
         //bs = GameObject.Find("Player").GetComponent<battlescript>();
@@ -78,6 +80,10 @@ public class enemyscript : MonoBehaviour, IDamageable
     public void stunfor(int value){
         stunned += value;
     }
+    public void reducedamageby(float a, int b){
+        weakentill = b;
+        weakenvalue = a;
+    }
 
     movevariation mv;
     GameObject instantiatedIntent;
@@ -99,7 +105,7 @@ public class enemyscript : MonoBehaviour, IDamageable
         }
         mv = variation[Random.Range(0, variation.Count)];
         instantiatedIntent = Instantiate(intent[mv.type], transform.position + new Vector3(0, 1.5f, 0), Quaternion.Euler(0,0,0));
-        instantiatedIntent.GetComponentInChildren<TMP_Text>().text = mv.value.ToString();
+        instantiatedIntent.GetComponentInChildren<TMP_Text>().text = (mv.value * weakenvalue).ToString();
     }
 
     public void move(){
@@ -116,7 +122,12 @@ public class enemyscript : MonoBehaviour, IDamageable
     void atk(){
         soundcontroller.Instance.playsound(8);
         for(int i = 0; i<mv.multiplicative;i++){
-            battlescript.Instance.damaged(mv.value);
+            battlescript.Instance.damaged((int)(mv.value  * weakenvalue));
+        }
+        if(weakentill <= 0){
+            weakenvalue = 0;
+        }else{
+            weakentill--;
         }
     }
 

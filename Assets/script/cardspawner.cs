@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class cardspawner : MonoBehaviour
 {
-    public GameObject cardbutton;
-    public GameObject[] cardlist;
+    public GameObject cardbutton, card;
     void OnEnable(){
         for(int i = 0; i < 3; i++){
-            Instantiate(cardlist[Random.Range(0, cardlist.Length)], transform).GetComponent<cardgetreward>().init(cardbutton);
+            Instantiate(card).GetComponent<cardgetreward>().init(cardbutton);
         }
     }
     void OnDisable(){
