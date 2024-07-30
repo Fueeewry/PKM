@@ -16,6 +16,8 @@ public class CollectionMenu : MonoBehaviour
     private List<CollectionItemHolder> cards = new List<CollectionItemHolder>();
     private List<GameObject> selections = new List<GameObject>();
 
+    private int selectedIndex = 0;
+
     private void OnEnable()
     {
         RefreshContent();
@@ -33,10 +35,7 @@ public class CollectionMenu : MonoBehaviour
         cards = CollectionManager.Instance.ReadAllCardData();
         GenerateSelectionButton();
 
-        if(cardImage.sprite == null)
-        {
-            ShowCardInfo(0);
-        }
+        ShowCardInfo(selectedIndex);
     }
 
     private void GenerateSelectionButton()
@@ -62,6 +61,11 @@ public class CollectionMenu : MonoBehaviour
 
     private void ShowCardInfo(int index)
     {
+        selections[selectedIndex].transform.GetChild(0).gameObject.SetActive(false);
+        selectedIndex = index;
+
+        selections[index].transform.GetChild(0).gameObject.SetActive(true);
+
         cardImage.sprite = cards[index].cardSprite;
         string infoText = GenerateInfoText(index);
         cardInfo.text = infoText;

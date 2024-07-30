@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 081084e6faadc8e40a1ef9f1f96b1728
+guid: 0776711dfb40fc0459617653bbbaa6b0
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -95,7 +95,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: DB Button
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 60
+        width: 402
+        height: 1055
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f198954e5e5fc548895cd0553e5b9fc
+      internalID: -522802949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -106,7 +127,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DB Button: -522802949
+      DB Button_1: -1351975824
+      DB Button_2: 1549988957
+      DB Button_3: 1773209541
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
