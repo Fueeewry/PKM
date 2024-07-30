@@ -16,16 +16,29 @@ public class SettingsMenu : MonoBehaviour
     Resolution[] resolutions;
     int currentResolutionIndex = 0;
 
+    private void Awake()
+    {
+        if(audioMixer == null)
+        {
+            audioMixer = GetComponent<AudioMixer>();
+        }
+    }
+
     private void Start()
     {
-        resolutions = Screen.resolutions;
-        SortResolutionArray();
+        resolutions = new Resolution[]
+        {
+            new Resolution { width = 1920, height = 1080 },
+            new Resolution { width = 1600, height = 900 },
+            new Resolution { width = 1280, height = 720 },
+            new Resolution { width = 854, height = 480 }
+        };
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
 
         for(int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height + " " + resolutions[i].refreshRate + "fps";
+            string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
 
             if(resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
@@ -41,7 +54,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void SortResolutionArray()
     {
-        var sortedResolutions = resolutions.OrderByDescending(r => r.width).ThenByDescending(r => r.refreshRate).ToArray();
+        var sortedResolutions = resolutions.OrderByDescending(r => r.width).ThenByDescending(r => r.refreshRateRatio).ToArray();
         resolutions = sortedResolutions;
     }
 
@@ -52,7 +65,6 @@ public class SettingsMenu : MonoBehaviour
     }
     public void SetVolume(float volume)
     {
-        Debug.Log(volume);
-        audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
     }
 }
