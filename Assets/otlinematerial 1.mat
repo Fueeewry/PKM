@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6155347464672649360
+--- !u!114 &-3945146189595883481
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glow 2
-  m_Shader: {fileID: -6465566751694194690, guid: dd33b39af2072ab47b7b9cffe2485916, type: 3}
+  m_Name: otlinematerial 1
+  m_Shader: {fileID: -6465566751694194690, guid: 8b615cb65e78d7a41abc703343d6c619, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,7 +37,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 1eac88c4e0df8744d96ac1bf6013544a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_34bba151b8b84c4087def3171d246c99_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b46c077d83de22a459bc547c981553c0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2D_1:
+        m_Texture: {fileID: 2800000, guid: 1eac88c4e0df8744d96ac1bf6013544a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -54,9 +62,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Float: 5
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Color: {r: 1.4980394, g: 1.4980394, b: 1.4980394, a: 0}
-    - _emmision: {r: 3.9072773, g: 12.844469, b: 0, a: 0}
+    - _Color: {r: 0.7880243, g: 0, b: 5.992156, a: 0}
+    - _Light: {r: 0, g: 1.6920038, b: 2, a: 0}
   m_BuildTextureStacks: []

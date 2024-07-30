@@ -119,3 +119,4 @@ MonoBehaviour:
   - {fileID: 5739674362599057624, guid: 7dd2823503a0c804b80b52a8609ff921, type: 3}
   - {fileID: 5739674362599057624, guid: b4630159f57349f4d97eb7d94ac2d916, type: 3}
   cardbutton: {fileID: 0}
+  image: {fileID: 1533241833175504894}

@@ -17,6 +17,8 @@ public class enemyscript : MonoBehaviour, IDamageable
 
     float weakenvalue = 1;
 
+    int type = 0;
+
     void Start(){
         //bs = GameObject.Find("Player").GetComponent<battlescript>();
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
@@ -27,7 +29,10 @@ public class enemyscript : MonoBehaviour, IDamageable
         }
         prepareattack();
     }
-    public void damaged(int damage){
+    public void damaged(int damage, GameObject effect){
+        if(effect != null){
+            Instantiate(effect, transform.position, Quaternion.Euler(0,0,0));
+        }
         if(shieldvalue > 0){
             if(shieldvalue > damage){
                 shieldvalue -= damage;
@@ -43,6 +48,23 @@ public class enemyscript : MonoBehaviour, IDamageable
         healthbar.value -= damage;
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
         battlescript.Instance.showEffect(damage, transform.position);
+
+        if(anim!=null){
+            switch(type){
+                case 0:
+                    anim.SetFloat("enemyhit", Random.Range(0.2f, 0.5f));
+                    anim.speed = Random.Range(1f, 2f);
+                    break;
+                case 1:
+                    anim.SetFloat("bosshit", Random.Range(0.2f, 0.5f));
+                    anim.speed = Random.Range(1f, 2f);
+                    break;
+                case 2:
+                    anim.SetFloat("dronehit", Random.Range(0.2f, 0.5f));
+                    anim.speed = Random.Range(1f, 2f);
+                    break;
+            }
+        }
 
         if(healthbar.value <= 0){
             battlescript.Instance.killedanenemy();

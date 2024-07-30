@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void damaged(int damage);
+    void damaged(int damage, GameObject a);
     void move();
     void prepareattack();
     bool checkstillalive();

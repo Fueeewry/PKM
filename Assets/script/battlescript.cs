@@ -17,7 +17,7 @@ public class battlescript : MonoBehaviour
     }
 
     public phaseClass[] phaseArray;
-    public GameObject[] cardselectedlist, phaseObject;
+    public GameObject[] cardselectedlist, phaseObject, attackeffect;
     public Transform[] deckshows;
     public GameObject goToEffect, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject;
     public Transform arrow, rewardGrid, relicgrid;
@@ -683,7 +683,7 @@ public class battlescript : MonoBehaviour
 
     void damagetoshield(){
         soundcontroller.Instance.playsound(3);
-        enemyscript.damaged(variable);
+        enemyscript.damaged(variable, attackeffect[0]);
         getshield(variable);
         removeAll();
     }
@@ -737,12 +737,12 @@ public class battlescript : MonoBehaviour
     }
 
     void revengestrike(){
-        enemyscript.damaged(variable * ((int)healthbar.maxValue - (int)healthbar.value));
+        enemyscript.damaged(variable * ((int)healthbar.maxValue - (int)healthbar.value), attackeffect[0]);
         removeAll();
     }
 
     void sacrificialstrike(){
-        enemyscript.damaged(8 + variable);
+        enemyscript.damaged(8 + variable, attackeffect[0]);
         removehealth(variable);
         removeAll();
     }
@@ -751,7 +751,7 @@ public class battlescript : MonoBehaviour
 
     void cyberattack(){
         soundcontroller.Instance.playsound(3);
-        enemyscript.damaged(cardvalue[0]);
+        enemyscript.damaged(cardvalue[0], attackeffect[0]);
     }
 
     void heal(){

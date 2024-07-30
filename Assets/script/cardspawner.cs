@@ -5,14 +5,18 @@ using UnityEngine;
 public class cardspawner : MonoBehaviour
 {
     public GameObject cardbutton, card;
+    List<GameObject> instantiatedcard = new List<GameObject>();
     void OnEnable(){
+        instantiatedcard.RemoveAll(item => item == null);
         for(int i = 0; i < 3; i++){
-            Instantiate(card).GetComponent<cardgetreward>().init(cardbutton);
+            GameObject a = Instantiate(card, transform);
+            a.GetComponent<cardgetreward>().init(cardbutton);
+            instantiatedcard.Add(a);
         }
     }
     void OnDisable(){
-        while(transform.childCount > 0){
-            Destroy(transform.GetChild(0));
+        foreach(GameObject a in instantiatedcard){
+            Destroy(a);
         }
     }
 }
