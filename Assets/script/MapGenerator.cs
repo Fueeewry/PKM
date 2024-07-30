@@ -28,10 +28,13 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color lineColor = Color.white;
     [SerializeField] private float lineWidth = 2f;
 
+    
+
     private List<List<Node>> map;
 
     void Start()
     {
+        
         GenerateMap();
         VisualizeMap();
         SetupContainers();
@@ -113,14 +116,14 @@ public class MapGenerator : MonoBehaviour
             nodeContainer.AddComponent<RectTransform>();
         }
 
-        // Ensure the line container is before the node container in hierarchy
+        
         lineContainer.transform.SetSiblingIndex(0);
         nodeContainer.transform.SetSiblingIndex(1);
     }
 
     void VisualizeMap()
     {
-        // First, draw all the lines
+        
         foreach (var floor in map)
         {
             foreach (var node in floor)
@@ -128,7 +131,7 @@ public class MapGenerator : MonoBehaviour
                 Vector2 startPos = new Vector2(node.Position.x * nodeSpacing, node.Position.y * floorHeight);
                 foreach (var connection in node.Connections)
                 {
-                    if (connection.Position.y > node.Position.y) // Only draw lines to nodes on the next floor
+                    if (connection.Position.y > node.Position.y)
                     {
                         Vector2 endPos = new Vector2(connection.Position.x * nodeSpacing, connection.Position.y * floorHeight);
                         DrawUILine(startPos, endPos);
@@ -137,7 +140,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        // Then, draw all the nodes
+        
         foreach (var floor in map)
         {
             foreach (var node in floor)
@@ -148,10 +151,49 @@ public class MapGenerator : MonoBehaviour
                 
                 rectTransform.anchoredPosition = new Vector2(node.Position.x * nodeSpacing, node.Position.y * floorHeight);
                 
-                nodeObject.AddComponent<NodeReference>().node = node;
+                NodeReference nodeRef = nodeObject.AddComponent<NodeReference>();
+                nodeRef.node = node;
+                
+                
+                Button button = nodeObject.GetComponent<Button>();
+                if (button == null)
+                {
+                    button = nodeObject.AddComponent<Button>();
+                }
+                
+                
+                button.onClick.AddListener(() => OnNodeClicked(node));
             }
         }
     }
+
+    void OnNodeClicked(Node node)
+    {
+        
+        string sceneToLoad = "";
+        switch (node.Type)
+        {
+            case NodeType.Enemy:
+                sceneToLoad = "enemy";  
+                break;
+            case NodeType.Boss:
+                sceneToLoad = "boss";  
+                break;
+            case NodeType.Event:
+                sceneToLoad = "event";
+                break;
+            case NodeType.RestSite:
+                sceneToLoad = "rest"; 
+                break;
+            default:
+                Debug.LogWarning("Unhandled node type: " + node.Type);
+                return;
+        }
+
+        
+        battlescript.Instance.sceneChanger(sceneToLoad);
+    }
+
 
     GameObject GetPrefabForNodeType(NodeType type)
     {
