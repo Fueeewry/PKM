@@ -86,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4795587736401951032, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_Value
-      value: 30
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4795587736401951032, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_MaxValue
-      value: 30
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5414778338701551513, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_Color.a

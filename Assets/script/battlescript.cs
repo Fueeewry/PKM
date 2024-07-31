@@ -19,7 +19,7 @@ public class battlescript : MonoBehaviour
     public phaseClass[] phaseArray;
     public GameObject[] cardselectedlist, phaseObject, attackeffect;
     public Transform[] deckshows;
-    public GameObject goToEffect, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject;
+    public GameObject goToEffect, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject, healobject;
     public Transform arrow, rewardGrid, relicgrid;
     public int maxEnergy = 3, energy = 3, idx = 0;
     IDamageable enemyscript;
@@ -48,7 +48,8 @@ public class battlescript : MonoBehaviour
         SceneManager.LoadScene(a);
 
         if(a.Equals("event")){
-            canvas.SetActive(false);
+            //canvas.SetActive(false);
+            Debug.Log("kita gk ada lagi scene quiz, jadi pop up");
         }else{
             interactionOnGoing = true;
             canvas.SetActive(true);
@@ -124,11 +125,13 @@ public class battlescript : MonoBehaviour
                 if(hit.collider.gameObject.tag == "enemy"){
                     enemyscript = hit.collider.gameObject.GetComponent<IDamageable>();
                     arrow.position = hit.collider.gameObject.transform.position + new Vector3(0,0,0);
-                }else if(hit.collider.gameObject.tag == "quiz"){
-                    hit.collider.gameObject.GetComponent<questiongenerator>().StartQuiz();
                 }
             }
         }
+    }
+
+    public void activatequiz(){
+        questiongenerator.Instance.StartQuiz();
     }
 
     void radial(){
@@ -308,6 +311,7 @@ public class battlescript : MonoBehaviour
         if(startofround == false){
             return;
         }
+        Debug.Log("DRAWS");
         for(int i = 0; i < phaseArray.Length; i++){
             for(int j = 0; j < 3; j++){
                 if(phaseArray[i].drawpile.Count <= 0){
@@ -355,10 +359,16 @@ public class battlescript : MonoBehaviour
     public void gethealrestsite(){
         soundcontroller.Instance.playsound(6);
         healthbar.value += healthbar.value * 0.3f;
+        healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        healthtext1.text = healthbar.value + " / " + healthbar.maxValue;
+        healobject.SetActive(true);
     }
     public void getheal(int heal){
         soundcontroller.Instance.playsound(6);
         healthbar.value += heal;
+        healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        healthtext1.text = healthbar.value + " / " + healthbar.maxValue;
+        healobject.SetActive(true);
     }
     public void damaged(int damage){
         if(avoidattack > 0){
@@ -782,6 +792,7 @@ public class battlescript : MonoBehaviour
     void getmaxhealthup(){
         healthbar.maxValue += 6;
         healthbar.value += 6;
+
     }
 }
 
