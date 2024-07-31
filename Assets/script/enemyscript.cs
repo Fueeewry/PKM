@@ -8,12 +8,12 @@ public class enemyscript : MonoBehaviour, IDamageable
 {
     public Slider healthbar;
     public TMP_Text shieldtext, healthtext;
-    public GameObject shieldobject;
+    public GameObject shieldobject, poisoneffect;
     public GameObject[] intent;
     public List<movevariation> variation = new List<movevariation>();
-    Animator anim;
+    public Animator anim;
 
-    int shieldvalue = 0, stunned, weakentill = 0;
+    int shieldvalue = 0, stunned, weakentill = 0, poison = 0;
 
     float weakenvalue = 1;
 
@@ -23,7 +23,9 @@ public class enemyscript : MonoBehaviour, IDamageable
     void Start(){
         //bs = GameObject.Find("Player").GetComponent<battlescript>();
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
-        anim = GetComponent<Animator>();
+        if(anim == null){
+            anim = GetComponent<Animator>();
+        }
         if(anim!=null){
             anim.SetFloat("startrandom", Random.Range(0.2f, 0.5f));
             anim.speed = Random.Range(1f, 2f);
@@ -52,15 +54,15 @@ public class enemyscript : MonoBehaviour, IDamageable
         if(anim!=null){
             switch(type){
                 case 0:
-                    anim.SetFloat("enemyhit", Random.Range(0.2f, 0.5f));
+                    anim.Play("enemyhit");
                     anim.speed = Random.Range(1f, 2f);
                     break;
                 case 1:
-                    anim.SetFloat("bosshit", Random.Range(0.2f, 0.5f));
+                    anim.Play("bosshit");
                     anim.speed = Random.Range(1f, 2f);
                     break;
                 case 2:
-                    anim.SetFloat("dronehit", Random.Range(0.2f, 0.5f));
+                    anim.Play("dronehit");
                     anim.speed = Random.Range(1f, 2f);
                     break;
             }
@@ -106,6 +108,9 @@ public class enemyscript : MonoBehaviour, IDamageable
         weakentill = b;
         weakenvalue = a;
     }
+    public void addpoison(int a){
+        poison += a;
+    }
 
     movevariation mv;
     GameObject instantiatedIntent;
@@ -118,12 +123,17 @@ public class enemyscript : MonoBehaviour, IDamageable
     }
 
     public void prepareattack(){
-        if(stunned > 0){
-            stunned--;
-            return;
-        }
         if(instantiatedIntent != null){
             Destroy(instantiatedIntent);
+        }
+        if(poison > 0){
+            damaged(poison, poisoneffect);
+            poison--;
+        }
+        if(stunned > 0){
+            stunned--;
+            instantiatedIntent = Instantiate(intent[2], transform.position + new Vector3(0, 1.5f, 0), Quaternion.Euler(0,0,0));
+            return;
         }
         mv = variation[Random.Range(0, variation.Count)];
         instantiatedIntent = Instantiate(intent[mv.type], transform.position + new Vector3(0, 1.5f, 0), Quaternion.Euler(0,0,0));
@@ -144,7 +154,7 @@ public class enemyscript : MonoBehaviour, IDamageable
     void atk(){
         soundcontroller.Instance.playsound(8);
         for(int i = 0; i<mv.multiplicative;i++){
-            Debug.Log((int)(mv.value  * weakenvalue));
+            Debug.Log("sssss" + "  " + (int)(mv.value  * weakenvalue));
             battlescript.Instance.damaged((int)(mv.value  * weakenvalue));
         }
         if(weakentill <= 0){

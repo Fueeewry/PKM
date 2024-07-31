@@ -11,4 +11,5 @@ public interface IDamageable
     int stealhealth(int damage);
     void stunfor(int value);
     void reducedamageby(float a, int b);
+    void addpoison(int variable);
 }

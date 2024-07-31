@@ -479,11 +479,13 @@ MonoBehaviour:
   shieldtext: {fileID: 1864648302879226743}
   healthtext: {fileID: 7565889939642848619}
   shieldobject: {fileID: 8092348827372928328}
+  poisoneffect: {fileID: 3765305842552545360, guid: 41a5d29bf95e3ae4a94ec498abacc2e3, type: 3}
   intent:
   - {fileID: 8628482327728088472, guid: 672c52ecd18cfa5469fb1e43a14b67ca, type: 3}
   - {fileID: 8628482327728088472, guid: 0c7bb9c69dd1de04d9d5a4a8b749ae4d, type: 3}
+  - {fileID: 8628482327728088472, guid: 43cfbbf8286022948aaaa8378ed56ac7, type: 3}
   variation:
-  - value: 10
+  - value: 5
     type: 0
     multiplicative: 1
   - value: 3
@@ -495,9 +497,12 @@ MonoBehaviour:
   - value: 2
     type: 1
     multiplicative: 1
-  - value: 4
+  - value: 3
     type: 1
     multiplicative: 1
+  anim: {fileID: 0}
+  intentheight: 1.5
+  type: 0
 --- !u!61 &4795587735332452576
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -805,9 +810,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 25
+  m_MaxValue: 3
   m_WholeNumbers: 1
-  m_Value: 25
+  m_Value: 3
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
