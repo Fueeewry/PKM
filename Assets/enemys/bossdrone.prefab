@@ -53,6 +53,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 6086809097966035288}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: type
       value: 2
       objectReference: {fileID: 0}

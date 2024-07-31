@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class cardgetreward : MonoBehaviour, IPointerDownHandler
+public class cardgetreward : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject[] referenceCard;
     public GameObject cardbutton;
@@ -24,5 +24,17 @@ public class cardgetreward : MonoBehaviour, IPointerDownHandler
             cardbutton.SetActive(false);
             transform.parent.parent.gameObject.SetActive(false);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData pointerEventData)
+    {
+        cursorcontroller.Instance.EnterHover();
+        soundcontroller.Instance.playsound(7);
+    }
+
+    //Detect when Cursor leaves the GameObject
+    public void OnPointerExit(PointerEventData pointerEventData)
+    {
+        cursorcontroller.Instance.ExitHover();
     }
 }
