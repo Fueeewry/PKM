@@ -1,0 +1,12 @@
+Font: Rubik  Style: Medium
+Point Size: 161   SP/PD Ratio: 3.1%
+
+Characters included: 95/95
+Missing characters: 0
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+
+Characters excluded from packing:
+----------------------------------------
