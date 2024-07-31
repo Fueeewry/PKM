@@ -529,7 +529,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -14.000046, y: 0.0008087158}
+  m_AnchoredPosition: {x: -14.000046, y: -0.000110161556}
   m_SizeDelta: {x: 33.7171, y: 10.9572}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1850283839
@@ -602,7 +602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -241, y: -166}
+  m_AnchoredPosition: {x: -310, y: -687}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2134064991
@@ -627,6 +627,7 @@ MonoBehaviour:
   restSiteNodePrefab: {fileID: 1670709509746568267, guid: f678a18804dc8994c9d528f0576eace0, type: 3}
   eventNodePrefab: {fileID: 8377685559310040456, guid: f0e2e9409a0e0204bbdaa77e8c12d398, type: 3}
   bossNodePrefab: {fileID: 3622586238399341658, guid: 4d47216007fa2114a8c188194b3d84e9, type: 3}
+  playerIcon: {fileID: 0}
   mapContainer: {fileID: 1568092016}
   mapCanvas: {fileID: 674719064}
   lineContainer: {fileID: 1850283839}
@@ -634,7 +635,7 @@ MonoBehaviour:
   lineColor: {r: 1, g: 0.59800184, b: 0, a: 1}
   lineWidth: 2
   scrollRect: {fileID: 2134064992}
-  scrollPadding: 10
+  scrollPadding: 0
 --- !u!114 &2134064992
 MonoBehaviour:
   m_ObjectHideFlags: 0

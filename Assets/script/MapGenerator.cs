@@ -19,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject eventNodePrefab;
     [SerializeField] private GameObject bossNodePrefab;
 
+    [SerializeField] private RectTransform playerIcon;
     [SerializeField] private Transform mapContainer;
     [SerializeField] private Canvas mapCanvas;
 
@@ -32,6 +33,7 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private float scrollPadding = 50f;
+    private Node currentNode;
 
     
 
@@ -220,20 +222,32 @@ public class MapGenerator : MonoBehaviour
 
                 rectTransform.anchoredPosition = new Vector2(node.Position.x * nodeSpacing, node.Position.y * floorHeight);
 
-                NodeReference nodeRef = nodeObject.AddComponent<NodeReference>();
+                NodeReference nodeRef = nodeObject.GetComponent<NodeReference>();
+                if (nodeRef == null)
+                {
+                    nodeRef = nodeObject.AddComponent<NodeReference>();
+                }
                 nodeRef.node = node;
 
 
                 Button button = nodeObject.GetComponent<Button>();
-                if (button == null)
-                {
-                    button = nodeObject.AddComponent<Button>();
-                }
+                
 
 
                 button.onClick.AddListener(() => OnNodeClicked(node));
             }
         }
+    }
+
+    void PlacePlayerAtStart()
+    {
+        currentNode = map[0][0]; // Assuming the start node is always the first node of the first floor
+        UpdatePlayerPosition();
+    }
+
+    void UpdatePlayerPosition()
+    {
+        playerIcon.anchoredPosition = new Vector2(currentNode.Position.x * nodeSpacing, currentNode.Position.y * floorHeight);
     }
 
     void SetupScrolling()
@@ -255,28 +269,32 @@ public class MapGenerator : MonoBehaviour
 
     void OnNodeClicked(Node node)
     {   
-        string sceneToLoad = "";
-        switch (node.Type)
+        if (currentNode.Connections.Contains(node) && node.Position.y > currentNode.Position.y)
         {
-            case NodeType.Enemy:
-                sceneToLoad = "battle1";  
-                break;
-            case NodeType.Boss:
-                sceneToLoad = "boss";  
-                break;
-            case NodeType.Event:
-                sceneToLoad = "event";
-                break;
-            case NodeType.RestSite:
-                sceneToLoad = "rest"; 
-                break;
-            default:
-                Debug.LogWarning("Unhandled node type: " + node.Type);
-                return;
-        }
+            currentNode = node;
+            UpdatePlayerPosition();
 
-        
-        battlescript.Instance.sceneChanger(sceneToLoad);
+            switch (node.Type)
+            {
+                case NodeType.Enemy:
+                case NodeType.Boss:
+                    battlescript.Instance.sceneChanger("battle");
+                    break;
+                case NodeType.Event:
+                    //battlescript.Instance.activatequiz();
+                    break;
+                case NodeType.RestSite:
+                    battlescript.Instance.sceneChanger("rest");
+                    break;
+                default:
+                    Debug.LogWarning("Unhandled node type: " + node.Type);
+                    break;
+            }
+        }
+        else
+        {
+            Debug.Log("Cannot move to this node. It's not connected or not on the next floor.");
+        }
     }
 
     GameObject GetPrefabForNodeType(NodeType type)
