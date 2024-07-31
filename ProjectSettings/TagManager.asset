@@ -6,6 +6,7 @@ TagManager:
   tags:
   - enemy
   - quiz
+  - StartNode
   layers:
   - Default
   - TransparentFX
