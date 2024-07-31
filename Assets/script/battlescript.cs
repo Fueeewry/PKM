@@ -85,8 +85,7 @@ public class battlescript : MonoBehaviour
 
     IEnumerator wait(){
         yield return new WaitForSeconds(0.2f);
-        startTurn(true);
-        refreshEnergy();
+        trueStartTurn();
         yield return new WaitForSeconds(0.3f);
         GameObject a = GameObject.FindGameObjectWithTag("enemy");
         if(a != null){
@@ -237,6 +236,7 @@ public class battlescript : MonoBehaviour
     }
 
     IEnumerator trueEndTurnCoroutine(){
+        interactionOnGoing = true;
         List<IDamageable> enemyInstantiatedList = GameObject.Find("enemyspawner").GetComponent<enemyspawner>().enemyInstantiatedList;
         if(enemyInstantiatedList.Count == 0){
             yield break;
@@ -279,10 +279,12 @@ public class battlescript : MonoBehaviour
             }else{
                 nextturnhealvalue = 0;
             }
-
         }
         nextturnshieldvalue = 0;
+
         refreshEnergy();
+        interactionOnGoing = false;
+        startTurn(true);
     }
 
     void refreshEnergy(){
@@ -305,24 +307,26 @@ public class battlescript : MonoBehaviour
         if(startofround == false){
             return;
         }
-        for(int i = 0; i < 3; i++){
-            if(phaseArray[idx].drawpile.Count <= 0){
-                if(phaseArray[idx].discardpile.Count > 0){
-                    discardtodrawpile();
-                }else{
-                    break;
+        for(int i = 0; i < phaseArray.Length; i++){
+            for(int j = 0; j < 3; j++){
+                if(phaseArray[i].drawpile.Count <= 0){
+                    if(phaseArray[i].discardpile.Count > 0){
+                        discardtodrawpile();
+                    }else{
+                        break;
+                    }
                 }
+                RectTransform b = phaseArray[i].drawpile[Random.Range(0, phaseArray[i].drawpile.Count)];
+                b.gameObject.GetComponent<cardlogic>().turnRaycast(true);
+                phaseArray[i].drawpile.Remove(b);
+                phaseArray[i].cardInHandList.Add(b);
+                b.SetParent(phaseArray[i].handTrans, false);
+                b.sizeDelta = new Vector2 (100, 125);
+                b.localScale = new Vector3(1,1,1);
+                b.anchorMax = new Vector2 (0.5f, 0.5f);
+                b.anchorMin = new Vector2 (0.5f, 0.5f);
+                StartCoroutine(goToEffectAnim(phaseArray[i].drawpileTrans.position, phaseArray[i].handTrans.position));
             }
-            RectTransform b = phaseArray[idx].drawpile[Random.Range(0, phaseArray[idx].drawpile.Count)];
-            b.gameObject.GetComponent<cardlogic>().turnRaycast(true);
-            phaseArray[idx].drawpile.Remove(b);
-            phaseArray[idx].cardInHandList.Add(b);
-            b.SetParent(phaseArray[idx].handTrans, false);
-            b.sizeDelta = new Vector2 (100, 125);
-            b.localScale = new Vector3(1,1,1);
-            b.anchorMax = new Vector2 (0.5f, 0.5f);
-            b.anchorMin = new Vector2 (0.5f, 0.5f);
-            StartCoroutine(goToEffectAnim(phaseArray[idx].drawpileTrans.position, phaseArray[idx].handTrans.position));
         }
     }
 
