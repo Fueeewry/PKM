@@ -24,7 +24,7 @@ public class battlescript : MonoBehaviour
     public int maxEnergy = 3, energy = 3, idx = 0;
     IDamageable enemyscript;
     public Slider healthbar;
-    public TMP_Text energytxt, shieldtext, healthtext;
+    public TMP_Text energytxt, shieldtext, healthtext, healthtext1;
     public List<relicvariant> relicVariantList = new List<relicvariant>();
     public Animator anim;
 
@@ -41,6 +41,7 @@ public class battlescript : MonoBehaviour
     void Start(){
         DontDestroyOnLoad(this.gameObject);
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        healthtext1.text = healthbar.value + " / " + healthbar.maxValue;
     }
 
     public void sceneChanger(string a){
@@ -382,6 +383,7 @@ public class battlescript : MonoBehaviour
         }
         healthbar.value -= damage;
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        healthtext1.text = healthbar.value + " / " + healthbar.maxValue;
         battlescript.Instance.showEffect(damage, transform.position);
 
         if(healthbar.value <= 0){
@@ -396,6 +398,7 @@ public class battlescript : MonoBehaviour
         anim.Play("getHit");
         healthbar.value -= damage;
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
+        healthtext1.text = healthbar.value + " / " + healthbar.maxValue;
         battlescript.Instance.showEffect(damage, transform.position);
 
         if(healthbar.value <= 0){
