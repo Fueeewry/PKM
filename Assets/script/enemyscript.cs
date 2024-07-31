@@ -103,6 +103,10 @@ public class enemyscript : MonoBehaviour, IDamageable
 
     public void stunfor(int value){
         stunned += value;
+        if(instantiatedIntent != null){
+            Destroy(instantiatedIntent);
+        }
+        instantiatedIntent = Instantiate(intent[2], transform.position + new Vector3(0, 1.5f, 0), Quaternion.Euler(0,0,0));
     }
     public void reducedamageby(float a, int b){
         weakentill = b;
@@ -141,6 +145,9 @@ public class enemyscript : MonoBehaviour, IDamageable
     }
 
     public void move(){
+        if(stunned > 0){
+            return;
+        }
         shieldvalue = 0;
         shieldtext.text = shieldvalue.ToString();
         shieldobject.SetActive(false);
