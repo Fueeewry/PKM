@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,35 +66,70 @@ public class MapGenerator : MonoBehaviour
                 currentFloor.Add(node);
             }
 
-            ConnectNodes(map[floor - 1], currentFloor);
+            ConnectNodes(map[floor - 1], currentFloor, false);
             map.Add(currentFloor);
         }
 
         // Create boss node
         List<Node> lastFloor = new List<Node> { new Node(NodeType.Boss, new Vector2(0, numFloors - 1)) };
-        ConnectNodes(map[numFloors - 2], lastFloor);
+        ConnectNodes(map[numFloors - 2], lastFloor, true);
         map.Add(lastFloor);
+
+        RemoveIsolatedNodes();
     }
 
-    void ConnectNodes(List<Node> previousFloor, List<Node> currentFloor)
+
+    void ConnectNodes(List<Node> previousFloor, List<Node> currentFloor, bool isBossFloor = false)
     {
         foreach (Node currentNode in currentFloor)
         {
-            int connections = UnityEngine.Random.Range(1, 3); // 1 or 2 connections
-            List<Node> possibleConnections = new List<Node>(previousFloor);
-
-            for (int i = 0; i < connections && possibleConnections.Count > 0; i++)
+            if (isBossFloor || previousFloor == map[0])
             {
-                int index = UnityEngine.Random.Range(0, possibleConnections.Count);
-                Node previousNode = possibleConnections[index];
+                // Connect to all nodes of the previous floor if it's the max or first floor
+                foreach (Node previousNode in previousFloor)
+                {
+                    currentNode.AddConnection(previousNode);
+                    previousNode.AddConnection(currentNode);
+                }
+            }
+            else
+            {
 
-                currentNode.AddConnection(previousNode);
-                previousNode.AddConnection(currentNode);
 
-                possibleConnections.RemoveAt(index);
+                int connections = UnityEngine.Random.Range(1, 3); // 1 or 2 connections
+                int currentNodeIndex = currentFloor.IndexOf(currentNode); // Get index of current node
+
+                // Create a list of possible connections based on adjacency
+                //List<Node> possibleConnections = new List<Node>(previousFloor);
+                
+                List<Node> possibleConnections = new List<Node>();
+                if (currentNodeIndex > 0 && currentNodeIndex - 1 < previousFloor.Count)
+                {
+                    possibleConnections.Add(previousFloor[currentNodeIndex - 1]);
+                }
+                if (currentNodeIndex < previousFloor.Count)
+                {
+                    possibleConnections.Add(previousFloor[currentNodeIndex]);
+                }
+                if (currentNodeIndex + 1 < previousFloor.Count)
+                {
+                    possibleConnections.Add(previousFloor[currentNodeIndex + 1]);
+                }
+                
+                for (int i = 0; i < connections && possibleConnections.Count > 0; i++)
+                {
+                    int index = UnityEngine.Random.Range(0, possibleConnections.Count);
+                    Node previousNode = possibleConnections[index];
+
+                    currentNode.AddConnection(previousNode);
+                    previousNode.AddConnection(currentNode);
+
+                    possibleConnections.RemoveAt(index);
+                }
             }
         }
     }
+
 
     NodeType GetRandomNodeType()
     {
@@ -127,6 +163,41 @@ public class MapGenerator : MonoBehaviour
         nodeContainer.transform.SetParent(scrollRect.content, false);
     }
 
+    void RemoveIsolatedNodes()
+    {
+        bool removedNodes;
+        do
+        {
+            removedNodes = false;
+            foreach (var floor in map)
+            {
+                if (floor == map[0]) continue;
+
+                List<Node> nodesToRemove = new List<Node>();
+
+                foreach (var node in floor)
+                {
+                    if (node.Connections.Count <= 1)
+                    {
+                        nodesToRemove.Add(node);
+                    }
+                }
+
+                // Remove the isolated nodes and update connections
+                foreach (var nodeToRemove in nodesToRemove)
+                {
+                    foreach (var connectedNode in nodeToRemove.Connections)
+                    {
+                        connectedNode.Connections.Remove(nodeToRemove);
+                    }
+                    floor.Remove(nodeToRemove);
+
+                    removedNodes = true;
+                }
+            }
+        } while (removedNodes); // Continue removing nodes as long as any nodes were removed
+    }
+
     void VisualizeMap()
     {
         
@@ -143,31 +214,23 @@ public class MapGenerator : MonoBehaviour
                         DrawUILine(startPos, endPos);
                     }
                 }
-            }
-        }
-
-        
-        foreach (var floor in map)
-        {
-            foreach (var node in floor)
-            {
                 GameObject prefab = GetPrefabForNodeType(node.Type);
                 GameObject nodeObject = Instantiate(prefab, nodeContainer.transform);
                 RectTransform rectTransform = nodeObject.GetComponent<RectTransform>();
-                
+
                 rectTransform.anchoredPosition = new Vector2(node.Position.x * nodeSpacing, node.Position.y * floorHeight);
-                
+
                 NodeReference nodeRef = nodeObject.AddComponent<NodeReference>();
                 nodeRef.node = node;
-                
-                
+
+
                 Button button = nodeObject.GetComponent<Button>();
                 if (button == null)
                 {
                     button = nodeObject.AddComponent<Button>();
                 }
-                
-                
+
+
                 button.onClick.AddListener(() => OnNodeClicked(node));
             }
         }
@@ -191,8 +254,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     void OnNodeClicked(Node node)
-    {
-        
+    {   
         string sceneToLoad = "";
         switch (node.Type)
         {
@@ -216,7 +278,6 @@ public class MapGenerator : MonoBehaviour
         
         battlescript.Instance.sceneChanger(sceneToLoad);
     }
-
 
     GameObject GetPrefabForNodeType(NodeType type)
     {
