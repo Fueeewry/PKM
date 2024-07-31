@@ -620,7 +620,7 @@ MonoBehaviour:
   numFloors: 15
   minPathsPerFloor: 3
   maxPathsPerFloor: 4
-  floorHeight: 50
+  floorHeight: 100
   nodeSpacing: 200
   startNodePrefab: {fileID: 2761075987770043547, guid: 3c45f74f4720d984ea8cc5a1060f8621, type: 3}
   enemyNodePrefab: {fileID: 3220612912814711616, guid: 1b33e5b6588fddd43b7a23c537eb7849, type: 3}
