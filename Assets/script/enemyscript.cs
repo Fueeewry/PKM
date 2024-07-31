@@ -17,7 +17,8 @@ public class enemyscript : MonoBehaviour, IDamageable
 
     float weakenvalue = 1;
 
-    int type = 0;
+    public float intentheight = 1.5f;
+    public int type = 0;
 
     void Start(){
         //bs = GameObject.Find("Player").GetComponent<battlescript>();
@@ -42,7 +43,6 @@ public class enemyscript : MonoBehaviour, IDamageable
                 shieldtext.text = "0";
                 shieldvalue = 0;
                 shieldobject.SetActive(false);
-                return;
             }
         }
         healthbar.value -= damage;
@@ -144,10 +144,11 @@ public class enemyscript : MonoBehaviour, IDamageable
     void atk(){
         soundcontroller.Instance.playsound(8);
         for(int i = 0; i<mv.multiplicative;i++){
+            Debug.Log((int)(mv.value  * weakenvalue));
             battlescript.Instance.damaged((int)(mv.value  * weakenvalue));
         }
         if(weakentill <= 0){
-            weakenvalue = 0;
+            weakenvalue = 1;
         }else{
             weakentill--;
         }

@@ -62,6 +62,7 @@ public class battlescript : MonoBehaviour
 
     public void enableRewards(bool isrelic){
         rewards.SetActive(true);
+        canvas.SetActive(false);
         if(isrelic == true){
             relic.SetActive(true);
             int relicchoosen = Random.Range(0, relicVariantList.Count);
@@ -88,7 +89,7 @@ public class battlescript : MonoBehaviour
         if(a != null){
             arrow.gameObject.SetActive(true);
             enemyscript = a.GetComponent<IDamageable>();
-            arrow.position = a.transform.position + new Vector3(0,3,0);
+            arrow.position = a.transform.position + new Vector3(0,0,0);
         }else{
             arrow.gameObject.SetActive(false);
         }
@@ -119,7 +120,7 @@ public class battlescript : MonoBehaviour
             if(hit.collider != null){
                 if(hit.collider.gameObject.tag == "enemy"){
                     enemyscript = hit.collider.gameObject.GetComponent<IDamageable>();
-                    arrow.position = hit.collider.gameObject.transform.position + new Vector3(0,3,0);
+                    arrow.position = hit.collider.gameObject.transform.position + new Vector3(0,0,0);
                 }else if(hit.collider.gameObject.tag == "quiz"){
                     hit.collider.gameObject.GetComponent<questiongenerator>().StartQuiz();
                 }
@@ -166,7 +167,7 @@ public class battlescript : MonoBehaviour
         if(a != null){
             arrow.gameObject.SetActive(true);
             enemyscript = a.GetComponent<IDamageable>();
-            arrow.position = a.transform.position + new Vector3(0,3,0);
+            arrow.position = a.transform.position + new Vector3(0,0,0);
         }else{
             arrow.gameObject.SetActive(false);
         }
@@ -179,7 +180,7 @@ public class battlescript : MonoBehaviour
             if(a != null){
                 arrow.gameObject.SetActive(true);
                 enemyscript = a.GetComponent<IDamageable>();
-                arrow.position = a.transform.position + new Vector3(0,3,0);
+                arrow.position = a.transform.position + new Vector3(0,0,0);
             }else{
                 arrow.gameObject.SetActive(false);
             }
@@ -188,6 +189,18 @@ public class battlescript : MonoBehaviour
 
     public bool checkInteractionOnGoing(){
         return interactionOnGoing;
+    }
+
+    public void changePhaseMinuss(){
+        foreach(GameObject a in phaseObject){
+            a.SetActive(false);
+        }
+        idx--;
+        if(idx<0){
+            idx = 2;
+        }
+        phaseObject[idx].SetActive(true);
+        startTurn();
     }
 
     public void changePhase(){
@@ -292,9 +305,13 @@ public class battlescript : MonoBehaviour
         }
     }
 
-    public void endTurn(){
+    public void endTurn(bool isforward){
         soundcontroller.Instance.playsound(5);
-        changePhase();
+        if(isforward == true){
+            changePhase();
+        }else{
+            changePhaseMinuss();
+        }
     }
 
     IEnumerator goToEffectAnim(Vector3 start, Vector3 destination){
