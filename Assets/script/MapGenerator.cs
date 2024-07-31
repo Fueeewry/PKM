@@ -28,13 +28,17 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Color lineColor = Color.white;
     [SerializeField] private float lineWidth = 2f;
 
+
+    [SerializeField] private ScrollRect scrollRect;
+    [SerializeField] private float scrollPadding = 50f;
+
     
 
     private List<List<Node>> map;
 
     void Start()
     {
-        
+        SetupScrolling();
         GenerateMap();
         VisualizeMap();
         SetupContainers();
@@ -119,6 +123,8 @@ public class MapGenerator : MonoBehaviour
         
         lineContainer.transform.SetSiblingIndex(0);
         nodeContainer.transform.SetSiblingIndex(1);
+        lineContainer.transform.SetParent(scrollRect.content, false);
+        nodeContainer.transform.SetParent(scrollRect.content, false);
     }
 
     void VisualizeMap()
@@ -167,6 +173,23 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    void SetupScrolling()
+    {
+        // Calculate the total height of the map
+        float totalHeight = (numFloors - 1) * floorHeight + (2 * scrollPadding);
+
+        // Set the height of the ScrollRect's content
+        scrollRect.content.sizeDelta = new Vector2(scrollRect.content.sizeDelta.x, totalHeight);
+
+        // Adjust the position of the map within the scroll area
+        Vector2 contentPosition = scrollRect.content.anchoredPosition;
+        contentPosition.y = -scrollPadding;
+        scrollRect.content.anchoredPosition = contentPosition;
+
+        // Start the scroll view at the bottom
+        scrollRect.verticalNormalizedPosition = 0f;
+    }
+
     void OnNodeClicked(Node node)
     {
         
@@ -174,7 +197,7 @@ public class MapGenerator : MonoBehaviour
         switch (node.Type)
         {
             case NodeType.Enemy:
-                sceneToLoad = "enemy";  
+                sceneToLoad = "battle1";  
                 break;
             case NodeType.Boss:
                 sceneToLoad = "boss";  
