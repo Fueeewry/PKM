@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Map Icon disabled.png.meta
 guid: 585fbc5e4c92c05429147b0e2c95c21f
+========
+guid: a7eca98ef692a2743aef970e4e388f85
+>>>>>>>> eb33b1a (sssss):Assets/Untitled64_20240801000120.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
