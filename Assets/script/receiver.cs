@@ -11,8 +11,7 @@ public class receiver : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData){
         if(eventData.pointerDrag!=null){
             cardlogic a = eventData.pointerDrag.GetComponent<cardlogic>();
-            Debug.Log(type);
-            if(a.type == type && transform.childCount == 0 && bs.reduceEnergy(a.cost) == true){
+            if(battlescript.Instance.checkInteractionOnGoing() == false && a.type == type && transform.childCount == 0 && bs.reduceEnergy(a.cost) == true){
                 a.turnRaycast(false);
                 eventData.pointerDrag.transform.SetParent(transform, false);
                 bs.removeCard(eventData.pointerDrag.GetComponent<RectTransform>());

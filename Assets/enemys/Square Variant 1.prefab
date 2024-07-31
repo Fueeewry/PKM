@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.6556604
       objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[0].value
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4795587735332452580, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_Name
       value: Square Variant 1
