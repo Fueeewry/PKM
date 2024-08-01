@@ -13,6 +13,8 @@ public class MapManager : MonoBehaviour
     public GameObject MapCanvas;
 
     [SerializeField] private Button mapButton;
+    [SerializeField] private Sprite mapButtonEnabledImg;
+    [SerializeField] private Sprite mapButtonDisabledImg;
 
     private void Awake()
     {
@@ -30,6 +32,20 @@ public class MapManager : MonoBehaviour
         if(MapCanvas != null)
         {
             MapCanvas.SetActive(boolean);
+        }
+    }
+
+    public void MapButtonActivate(bool boolean)
+    {
+        if (boolean)
+        {
+            mapButton.image.sprite = mapButtonEnabledImg;
+            mapButton.image.raycastTarget = true;
+        }
+        else
+        {
+            mapButton.image.sprite = mapButtonDisabledImg;
+            mapButton.image.raycastTarget = false;
         }
     }
 
