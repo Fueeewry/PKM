@@ -29,7 +29,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -102,13 +102,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_4258C632: 2.97
-    - Vector1_B847FAE5: 8.69
+    - Vector1_4258C632: 0
+    - Vector1_B847FAE5: 0.65
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -118,7 +119,8 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FlickeringToggle: 0
+    - _FlickeringPower: 0
+    - _FlickeringToggle: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -135,13 +137,15 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _WorkflowMode: 1
+    - _ZTest: 4
     - _ZWrite: 1
+    - _ZWriteControl: 0
     m_Colors:
-    - Color_BB588D2D: {r: 0.74901956, g: 0, b: 0.5647059, a: 0}
-    - Vector2_2181DF03: {r: 1, g: 23.3, b: 0, a: 0}
+    - Color_BB588D2D: {r: 1, g: 1, b: 1, a: 1}
+    - Vector2_2181DF03: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _baseColor: {r: 0, g: 155.83775, b: 383.49805, a: 0}
+    - _baseColor: {r: 0, g: 2.6663344, b: 2.8284278, a: 1}
   m_BuildTextureStacks: []
