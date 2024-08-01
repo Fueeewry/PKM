@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/boss.unity
     guid: e16390e6b84ce7643acbecef80d721bc
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: 711e21042940ad04db0db0f78187d06a
   m_configObjects: {}

@@ -45,6 +45,7 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         VisualizeMap();
         SetupContainers();
+        PlacePlayerAtStart();
     }
 
     void GenerateMap()
@@ -159,8 +160,8 @@ public class MapGenerator : MonoBehaviour
         }
 
         
-        lineContainer.transform.SetSiblingIndex(0);
-        nodeContainer.transform.SetSiblingIndex(1);
+        lineContainer.transform.SetSiblingIndex(1);
+        nodeContainer.transform.SetSiblingIndex(2);
         lineContainer.transform.SetParent(scrollRect.content, false);
         nodeContainer.transform.SetParent(scrollRect.content, false);
     }
@@ -198,24 +199,68 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         } while (removedNodes); // Continue removing nodes as long as any nodes were removed
+
+
+
+        // remove all nodes that does not have a continuation to the next floor
+        for(int floorIndex = 1; floorIndex < map.Count - 2; floorIndex++) 
+        {
+            var currentFloor = map[floorIndex];
+            var nextFloor = map[floorIndex + 1];
+
+            foreach (var node in currentFloor)
+            {
+                bool modifyNode = true;
+                int nodeIndex = currentFloor.IndexOf(node);
+
+                Node closestNode = null;
+                int closestIndexDifference = int.MaxValue;
+
+                // Ensure the index exists on the next floor
+                if (nodeIndex < nextFloor.Count)
+                {
+                    closestNode = nextFloor[nodeIndex];
+                    closestIndexDifference = 0;
+                }
+                else
+                {
+                    // Find the closest valid node if index doesn't exist
+                    for (int i = 0; i < nextFloor.Count; i++)
+                    {
+                        int indexDifference = Mathf.Abs(nodeIndex - i);
+                        if (indexDifference < closestIndexDifference)
+                        {
+                            closestIndexDifference = indexDifference;
+                            closestNode = nextFloor[i];
+                        }
+                    }
+                }
+
+                foreach (var connection in node.Connections)
+                {
+                    if(connection.Position.y > node.Position.y)
+                    {
+                        modifyNode = false;
+                        break;
+                    }
+                }
+                if (modifyNode)
+                {
+                    node.AddConnection(closestNode);
+                    closestNode.AddConnection(node);
+                }
+            }
+        }
     }
 
     void VisualizeMap()
     {
-        
         foreach (var floor in map)
         {
             foreach (var node in floor)
             {
                 Vector2 startPos = new Vector2(node.Position.x * nodeSpacing, node.Position.y * floorHeight);
-                foreach (var connection in node.Connections)
-                {
-                    if (connection.Position.y > node.Position.y)
-                    {
-                        Vector2 endPos = new Vector2(connection.Position.x * nodeSpacing, connection.Position.y * floorHeight);
-                        DrawUILine(startPos, endPos);
-                    }
-                }
+
                 GameObject prefab = GetPrefabForNodeType(node.Type);
                 GameObject nodeObject = Instantiate(prefab, nodeContainer.transform);
                 RectTransform rectTransform = nodeObject.GetComponent<RectTransform>();
@@ -229,12 +274,19 @@ public class MapGenerator : MonoBehaviour
                 }
                 nodeRef.node = node;
 
-
                 Button button = nodeObject.GetComponent<Button>();
-                
-
-
                 button.onClick.AddListener(() => OnNodeClicked(node));
+
+
+                //Draw the lines
+                foreach (var connection in node.Connections)
+                {
+                    if (connection.Position.y > node.Position.y)
+                    {
+                        Vector2 endPos = new Vector2(connection.Position.x * nodeSpacing, connection.Position.y * floorHeight);
+                        DrawUILine(startPos, endPos);
+                    }
+                }
             }
         }
     }
@@ -268,23 +320,27 @@ public class MapGenerator : MonoBehaviour
     }
 
     void OnNodeClicked(Node node)
-    {   
+    {
         if (currentNode.Connections.Contains(node) && node.Position.y > currentNode.Position.y)
         {
             currentNode = node;
             UpdatePlayerPosition();
 
+            MapManager.Instance.SetMapDisplay(false);
+
             switch (node.Type)
             {
                 case NodeType.Enemy:
+                    battlescript.Instance.sceneChanger("battle1");
+                    break;
                 case NodeType.Boss:
-                    battlescript.Instance.sceneChanger("battle");
+                    battlescript.Instance.sceneChanger("boss");
                     break;
                 case NodeType.Event:
-                    //battlescript.Instance.activatequiz();
+                    battlescript.Instance.activatequiz();
                     break;
                 case NodeType.RestSite:
-                    battlescript.Instance.sceneChanger("rest");
+                    battlescript.Instance.sceneChanger("restsite");
                     break;
                 default:
                     Debug.LogWarning("Unhandled node type: " + node.Type);
