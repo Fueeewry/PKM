@@ -46,7 +46,9 @@ public class battlescript : MonoBehaviour
         interactionOnGoing = true;
         canvas.SetActive(true);
         soundcontroller.Instance.playsound(9);
-        mapbutton.SetActive(false);
+        //mapbutton.SetActive(false);
+        MapManager.Instance.SetMapDisplay(false);
+        MapManager.Instance.MapButtonActivate(false);
         StartBattle();
     }
     
@@ -60,15 +62,19 @@ public class battlescript : MonoBehaviour
         titlestage.text = "STAGE " + levelstage;
         if(a.Equals("event")){
             canvas.SetActive(false);
-            mapbutton.SetActive(true);
+            //mapbutton.SetActive(true);
+            MapManager.Instance.MapButtonActivate(true);
         }else if(a.Equals("restsite")){
             canvas.SetActive(false);
-            mapbutton.SetActive(true);
+            //mapbutton.SetActive(true);
+            MapManager.Instance.MapButtonActivate(true);
         }else{
             interactionOnGoing = true;
             canvas.SetActive(true);
             soundcontroller.Instance.playsound(9);
-            mapbutton.SetActive(false);
+            //mapbutton.SetActive(false);
+            MapManager.Instance.SetMapDisplay(false);
+            MapManager.Instance.MapButtonActivate(false);
             arrow.gameObject.SetActive(true);
             StartBattle();
         }
@@ -84,7 +90,10 @@ public class battlescript : MonoBehaviour
     public void enableRewards(bool isrelic){
         rewards.SetActive(true);
         canvas.SetActive(false);
-        mapbutton.SetActive(true);
+        //mapbutton.SetActive(true);
+        MapManager.Instance.SetMapDisplay(true);
+        MapManager.Instance.MapButtonActivate(true);
+
         arrow.gameObject.SetActive(false);
         if(isrelic == true){
             relic.SetActive(true);
@@ -875,7 +884,8 @@ public class battlescript : MonoBehaviour
 
     void lifesteal(){
         variabletouse = effectvalue[getid(effect)];
-        getheal(enemyscript.stealhealth(variable));
+        enemyscript.damaged(variable, attackeffect[0]);
+        getheal(variable);
         removeAll2();
     }
 

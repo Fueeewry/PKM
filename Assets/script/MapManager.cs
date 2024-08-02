@@ -24,7 +24,6 @@ public class MapManager : MonoBehaviour
     private void Start()
     {
         mapButton.onClick.AddListener(()=> MapButton());
-        SetMapDisplay(false);
     }
 
     public void SetMapDisplay(bool boolean)
