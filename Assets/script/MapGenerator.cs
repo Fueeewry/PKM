@@ -326,6 +326,7 @@ public class MapGenerator : MonoBehaviour
             UpdatePlayerPosition();
 
             MapManager.Instance.SetMapDisplay(false);
+            MapManager.Instance.MapButtonActivate(false);
 
             switch (node.Type)
             {

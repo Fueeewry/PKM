@@ -6127,6 +6127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapCanvas: {fileID: 330770852}
   mapButton: {fileID: 1794320755}
+  mapButtonEnabledImg: {fileID: 21300000, guid: 72c5818a2dbbd514183fdedb136d8d0d, type: 3}
+  mapButtonDisabledImg: {fileID: 21300000, guid: 585fbc5e4c92c05429147b0e2c95c21f, type: 3}
 --- !u!1 &209794249
 GameObject:
   m_ObjectHideFlags: 0
