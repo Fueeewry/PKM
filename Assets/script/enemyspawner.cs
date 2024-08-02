@@ -31,7 +31,7 @@ public class enemyspawner : MonoBehaviour
                 GameObject b = Instantiate(enemylist[a[i]], transform.position + new Vector3((i + 2) * 2 , (i + 2) * -1, 0), Quaternion.Euler(0,0,0));
                 enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
             }
-            InvokeRepeating("checkbattledone", 0.1f, 0.1f);
+            InvokeRepeating("checkbattledone", 0.02f, 0.02f);
         }else{
             int i = 0;
             GameObject b = Instantiate(droneboss, transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
@@ -42,7 +42,7 @@ public class enemyspawner : MonoBehaviour
             i++;
             b = Instantiate(droneboss, transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
             enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
-            InvokeRepeating("checkbattledone", 0.1f, 0.1f);
+            InvokeRepeating("checkbattledone1", 0.02f, 0.02f);
         }
     }
 
@@ -51,6 +51,14 @@ public class enemyspawner : MonoBehaviour
         if(enemyInstantiatedList.Count == 0){
             battlescript.Instance.enableRewards(false);
             CancelInvoke("checkbattledone");
+        }
+    }
+
+    public void checkbattledone1(){
+        enemyInstantiatedList.RemoveAll(item => item == null);
+        if(enemyInstantiatedList.Count == 0){
+            battlescript.Instance.wingame();
+            CancelInvoke("checkbattledone1");
         }
     }
 }

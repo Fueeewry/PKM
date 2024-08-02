@@ -29,6 +29,7 @@ public class cursorcontroller : MonoBehaviour
 
     public void ExitHover()
     {
+        Debug.Log("tesssst");
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
     }
 }

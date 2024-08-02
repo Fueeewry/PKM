@@ -8,10 +8,11 @@ public class enemyscript : MonoBehaviour, IDamageable
 {
     public Slider healthbar;
     public TMP_Text shieldtext, healthtext;
-    public GameObject shieldobject, poisoneffect;
+    public GameObject shieldobject, poisoneffect, poisonstack;
     public GameObject[] intent;
     public List<movevariation> variation = new List<movevariation>();
     public Animator anim;
+    public Transform debufftrans;
 
     int shieldvalue = 0, stunned, weakentill = 0, poison = 0;
 
@@ -112,8 +113,11 @@ public class enemyscript : MonoBehaviour, IDamageable
         weakentill = b;
         weakenvalue = a;
     }
+    GameObject instantiatepoisonstack;
     public void addpoison(int a){
         poison += a;
+        instantiatepoisonstack = Instantiate(poisonstack, debufftrans);
+        instantiatepoisonstack.GetComponentInChildren<TMP_Text>().text = poison.ToString();
     }
 
     movevariation mv;
@@ -131,6 +135,11 @@ public class enemyscript : MonoBehaviour, IDamageable
             Destroy(instantiatedIntent);
         }
         if(poison > 0){
+            if(instantiatepoisonstack!=null){
+                instantiatepoisonstack.GetComponentInChildren<TMP_Text>().text = poison.ToString();
+            }else{
+                instantiatepoisonstack = Instantiate(poisonstack, debufftrans);
+            }
             damaged(poison, poisoneffect);
             poison--;
         }
@@ -151,10 +160,16 @@ public class enemyscript : MonoBehaviour, IDamageable
         shieldvalue = 0;
         shieldtext.text = shieldvalue.ToString();
         shieldobject.SetActive(false);
-        if(mv.type == 0){
-            atk();
-        }else{
-            def();
+        switch(mv.type){
+            case 0:
+                atk();
+                break;
+            case 1:
+                def();
+                break;
+            case 3:
+                buff();
+                break;
         }
     }
 
@@ -177,6 +192,18 @@ public class enemyscript : MonoBehaviour, IDamageable
             shieldobject.SetActive(true);
             shieldvalue += mv.value;
             shieldtext.text = shieldvalue.ToString();
+        }
+    }
+
+    void buff(){
+        soundcontroller.Instance.playsound(8);
+        for(int i = 0; i<mv.multiplicative;i++){
+            foreach(movevariation m in variation){
+                if(m.type == 3){
+                    break;
+                }
+                m.value += mv.value;
+            }
         }
     }
 }

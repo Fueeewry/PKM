@@ -164,8 +164,48 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
-      propertyPath: variation.Array.data[0].value
+      propertyPath: intent.Array.size
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: intent.Array.data[3]
+      value: 
+      objectReference: {fileID: 8628482327728088472, guid: 10008646932af0d4c8c73f5cb400ea56, type: 3}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[5].type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[0].value
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[1].value
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[2].value
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[3].value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[4].value
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[5].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735332452579, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: variation.Array.data[5].multiplicative
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4795587735332452580, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_Name
@@ -185,11 +225,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4795587736401951032, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_Value
-      value: 15
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4795587736401951032, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_MaxValue
-      value: 15
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4795587736401951033, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
       propertyPath: m_AnchoredPosition.y

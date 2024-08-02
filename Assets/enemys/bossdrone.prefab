@@ -68,6 +68,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: bossdrone
       objectReference: {fileID: 0}
+    - target: {fileID: 4795587735983939756, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587735983939756, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587736401951032, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: m_Value
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795587736401951032, guid: 273169a3435b49849a7e86ca7a0705ed, type: 3}
+      propertyPath: m_MaxValue
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

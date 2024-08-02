@@ -7,11 +7,15 @@ public class receiver : MonoBehaviour, IDropHandler
 {
     public cardtype type;
     public battlescript bs;
+    public bool canget = true;
+    public GameObject ss;
 
     public void OnDrop(PointerEventData eventData){
         if(eventData.pointerDrag!=null){
             cardlogic a = eventData.pointerDrag.GetComponent<cardlogic>();
-            if(battlescript.Instance.checkInteractionOnGoing() == false && a.type == type && transform.childCount == 0 && bs.reduceEnergy(a.cost) == true){
+            Debug.Log("testt11");
+            if(battlescript.Instance.checkInteractionOnGoing() == false && a.type == type && transform.childCount == 0 && bs.reduceEnergy(a.cost) == true && canget == true){
+                Debug.Log("testt");
                 a.turnRaycast(false);
                 eventData.pointerDrag.transform.SetParent(transform, false);
                 bs.removeCard(eventData.pointerDrag.GetComponent<RectTransform>());
@@ -29,5 +33,10 @@ public class receiver : MonoBehaviour, IDropHandler
             }
             }
         }
+    }
+
+    public void changestate(bool a){
+        canget = a;
+        ss.SetActive(!a);
     }
 }

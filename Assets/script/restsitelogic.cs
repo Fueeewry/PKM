@@ -6,7 +6,6 @@ public class restsitelogic : MonoBehaviour
 {
     public void heal(){
         battlescript.Instance.gethealrestsite();
-        gameObject.SetActive(false);
     }
     public void upgrade(){
         battlescript.Instance.getupgrade();

@@ -19,12 +19,12 @@ public class battlescript : MonoBehaviour
     public phaseClass[] phaseArray;
     public GameObject[] cardselectedlist, phaseObject, attackeffect;
     public Transform[] deckshows;
-    public GameObject goToEffect, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject, healobject;
+    public GameObject goToEffect, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject, healobject, winscreen, shieldeffectobject, mapbutton;
     public Transform arrow, rewardGrid, relicgrid;
     public int maxEnergy = 3, energy = 3, idx = 0;
     IDamageable enemyscript;
     public Slider healthbar;
-    public TMP_Text energytxt, shieldtext, healthtext, healthtext1;
+    public TMP_Text energytxt, shieldtext, healthtext, healthtext1, titlestage;
     public List<relicvariant> relicVariantList = new List<relicvariant>();
     public Animator anim;
 
@@ -42,18 +42,32 @@ public class battlescript : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
         healthtext1.text = healthbar.value + " / " + healthbar.maxValue;
-    }
 
+        interactionOnGoing = true;
+        canvas.SetActive(true);
+        soundcontroller.Instance.playsound(9);
+        mapbutton.SetActive(false);
+        StartBattle();
+    }
+    
+    int levelstage = 1;
     public void sceneChanger(string a){
         SceneManager.LoadScene(a);
 
+        levelstage++;
+        titlestage.text = "STAGE " + levelstage;
+
         if(a.Equals("event")){
-            //canvas.SetActive(false);
-            Debug.Log("kita gk ada lagi scene quiz, jadi pop up");
+            canvas.SetActive(false);
+            mapbutton.SetActive(true);
+        }else if(a.Equals("restsite")){
+            canvas.SetActive(false);
+            mapbutton.SetActive(true);
         }else{
             interactionOnGoing = true;
             canvas.SetActive(true);
             soundcontroller.Instance.playsound(9);
+            mapbutton.SetActive(false);
             StartBattle();
         }
     }
@@ -68,6 +82,7 @@ public class battlescript : MonoBehaviour
     public void enableRewards(bool isrelic){
         rewards.SetActive(true);
         canvas.SetActive(false);
+        mapbutton.SetActive(true);
         if(isrelic == true){
             relic.SetActive(true);
             int relicchoosen = Random.Range(0, relicVariantList.Count);
@@ -127,6 +142,10 @@ public class battlescript : MonoBehaviour
                     arrow.position = hit.collider.gameObject.transform.position + new Vector3(0,0,0);
                 }
             }
+        }
+
+        if(Input.GetKeyDown("m") && mapbutton.activeInHierarchy == true){
+            MapManager.Instance.MapButton();
         }
     }
 
@@ -227,13 +246,12 @@ public class battlescript : MonoBehaviour
             candraw = true;
             StartCoroutine(trueEndTurnCoroutine());
             soundcontroller.Instance.playsound(5);
-            for(int i = 0;i < cardselectedlist.Length; i++){
-                if(cardselectedlist[i].transform.childCount > 1){
-                    RectTransform a = cardselectedlist[i].transform.GetChild(1).gameObject.GetComponent<RectTransform>();
-                    phaseArray[i].discardpile.Add(a);
-                    phaseArray[i].cardInHandList.Remove(a);
-                    a.SetParent(phaseArray[i].discardpileTrans, false);
-                    StartCoroutine(goToEffectAnim(phaseArray[i].drawpileTrans.position, phaseArray[i].handTrans.position));
+            foreach(phaseClass pc in phaseArray){
+                while(pc.cardInHandList.Count > 0){
+                    RectTransform a = pc.cardInHandList[0];
+                    pc.discardpile.Add(a);
+                    pc.cardInHandList.Remove(a);
+                    a.SetParent(pc.discardpileTrans, false);
                 }
             }
         }
@@ -267,12 +285,14 @@ public class battlescript : MonoBehaviour
     public void trueStartTurn(){
         killedanenemy();
         if(nextturnshieldvalue > 0){
-            shieldvalue = nextturnshieldvalue;
+            shieldvalue += nextturnshieldvalue;
             shieldtext.text = shieldvalue.ToString();
             shieldobject.SetActive(true);
+        }
+
+        if(shieldvalue > 0){
+            shieldobject.SetActive(true);
         }else{
-            shieldvalue = 0;
-            shieldtext.text = shieldvalue.ToString();
             shieldobject.SetActive(false);
         }
 
@@ -287,8 +307,8 @@ public class battlescript : MonoBehaviour
         nextturnshieldvalue = 0;
 
         refreshEnergy();
-        interactionOnGoing = false;
         startTurn(true);
+        interactionOnGoing = false;
     }
 
     void refreshEnergy(){
@@ -299,38 +319,39 @@ public class battlescript : MonoBehaviour
     }
 
     public void discardtodrawpile(){
-        while(phaseArray[idx].discardpile.Count > 0){
-            RectTransform a = phaseArray[idx].discardpile[0];
-            phaseArray[idx].drawpile.Add(a);
-            phaseArray[idx].discardpile.Remove(a);
-            a.SetParent(phaseArray[idx].drawpileTrans, false);
-        }
+        foreach(phaseClass pc in phaseArray){
+            while(pc.discardpile.Count > 0){
+                RectTransform a = pc.discardpile[0];
+                pc.drawpile.Add(a);
+                pc.discardpile.Remove(a);
+                a.SetParent(pc.drawpileTrans, false);
+            }
+        }   
     }
 
     public void startTurn(bool startofround){
         if(startofround == false){
             return;
         }
-        Debug.Log("DRAWS");
-        for(int i = 0; i < phaseArray.Length; i++){
+        foreach(phaseClass pc in phaseArray){
             for(int j = 0; j < 3; j++){
-                if(phaseArray[i].drawpile.Count <= 0){
-                    if(phaseArray[i].discardpile.Count > 0){
+                if(pc.drawpile.Count <= 0){
+                    if(pc.discardpile.Count > 0){
+                        Debug.Log("Teeeees");
                         discardtodrawpile();
                     }else{
                         break;
                     }
                 }
-                RectTransform b = phaseArray[i].drawpile[Random.Range(0, phaseArray[i].drawpile.Count)];
+                RectTransform b = pc.drawpile[Random.Range(0, pc.drawpile.Count)];
                 b.gameObject.GetComponent<cardlogic>().turnRaycast(true);
-                phaseArray[i].drawpile.Remove(b);
-                phaseArray[i].cardInHandList.Add(b);
-                b.SetParent(phaseArray[i].handTrans, false);
+                pc.cardInHandList.Add(b);
+                pc.drawpile.Remove(b);
+                b.SetParent(pc.handTrans, false);
                 b.sizeDelta = new Vector2 (100, 125);
                 b.localScale = new Vector3(1,1,1);
                 b.anchorMax = new Vector2 (0.5f, 0.5f);
                 b.anchorMin = new Vector2 (0.5f, 0.5f);
-                StartCoroutine(goToEffectAnim(phaseArray[i].drawpileTrans.position, phaseArray[i].handTrans.position));
             }
         }
     }
@@ -358,7 +379,7 @@ public class battlescript : MonoBehaviour
     }
     public void gethealrestsite(){
         soundcontroller.Instance.playsound(6);
-        healthbar.value += healthbar.value * 0.3f;
+        healthbar.value += healthbar.value * 0.65f;
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
         healthtext1.text = healthbar.value + " / " + healthbar.maxValue;
         healobject.SetActive(true);
@@ -419,6 +440,7 @@ public class battlescript : MonoBehaviour
         deathscreen.SetActive(true);
     }
     public void endrun(){
+
         sceneChanger("Main menu");
         Destroy(this.gameObject);
     }
@@ -459,13 +481,19 @@ public class battlescript : MonoBehaviour
 
         switch(a.GetComponent<cardlogic>().type){
             case cardtype.effect:
-                Instantiate(a, deckshows[0]).GetComponent<cardlogic>().enabled = false;
+                b = Instantiate(a, deckshows[0]);
+                b.GetComponent<cardlogic>().enabled = false;
+                b.transform.localScale = new Vector3(1,1,1);
                 break;
             case cardtype.function:
-                Instantiate(a, deckshows[1]).GetComponent<cardlogic>().enabled = false;
+                b = Instantiate(a, deckshows[1]);
+                b.GetComponent<cardlogic>().enabled = false;
+                b.transform.localScale = new Vector3(1,1,1);
                 break;
             case cardtype.variable:
-                Instantiate(a, deckshows[2]).GetComponent<cardlogic>().enabled = false;
+                b = Instantiate(a, deckshows[2]);
+                b.GetComponent<cardlogic>().enabled = false;
+                b.transform.localScale = new Vector3(1,1,1);
                 break;
         }
     }
@@ -490,6 +518,16 @@ public class battlescript : MonoBehaviour
     }
     public void addFunction(string function){
         this.function = function;
+        if(function.Equals("outputcast") || function.Equals("riskymove") || function.Equals("backwarddefense") || function.Equals("clone")){
+            if(variable>-1){
+                RectTransform a = cardselectedlist[2].transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+                phaseArray[2].cardInHandList.Add(a);
+                a.SetParent(phaseArray[2].handTrans, false);
+                StartCoroutine(goToEffectAnim(phaseArray[2].drawpileTrans.position, phaseArray[2].handTrans.position));
+                removeVariable();
+            }
+            cardselectedlist[2].GetComponent<receiver>().changestate(false);
+        }
     }
     public void addEffect(string effect){
         this.effect = effect;
@@ -507,6 +545,12 @@ public class battlescript : MonoBehaviour
         removeVariable();
         removeFunction();
         removeEffect();
+        cardselectedlist[2].GetComponent<receiver>().changestate(true);
+    }
+    public void removeAll1(){
+        removeFunction();
+        removeEffect();
+        cardselectedlist[2].GetComponent<receiver>().changestate(true);
     }
 
     public void getshield(int value){
@@ -514,12 +558,27 @@ public class battlescript : MonoBehaviour
         shieldobject.SetActive(true);
         shieldvalue += value;
         shieldtext.text = shieldvalue.ToString();
+        StartCoroutine(shieldanim());
     }
 
     public void mixingCard(){
-        if((function.Equals("outputcast") || function.Equals("riskymove") || function.Equals("backwarddefense") || function.Equals("redraw") || function.Equals("clone")) && !effect.Equals("") && enemyscript!=null && interactionOnGoing == false){
+        if((function.Equals("outputcast") || function.Equals("riskymove") || function.Equals("backwarddefense") || function.Equals("clone")) && !effect.Equals("") && enemyscript!=null && interactionOnGoing == false){
             Invoke(function, 0.1f);
-            Debug.Log(variable);
+            for(int i = 0;i < cardselectedlist.Length; i++){
+                if(i == 2){
+                    continue;
+                }
+                RectTransform a = cardselectedlist[i].transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+                phaseArray[i].discardpile.Add(a);
+                phaseArray[i].cardInHandList.Remove(a);
+                a.SetParent(phaseArray[i].discardpileTrans, false);
+                StartCoroutine(goToEffectAnim(phaseArray[i].drawpileTrans.position, phaseArray[i].handTrans.position));
+            }
+            return;
+        }
+
+        if(variable!=-1 && (function.Equals("sacrificialstrike") ||function.Equals("damagetoshield") || function.Equals("weaken") || function.Equals("lifesteal") || function.Equals("stun") || function.Equals("clone")) && enemyscript!=null && interactionOnGoing == false){
+            Invoke(function, 0.1f);
             for(int i = 0;i < cardselectedlist.Length; i++){
                 if(i == 0){
                     continue;
@@ -535,7 +594,6 @@ public class battlescript : MonoBehaviour
 
         if(variable!=-1 && !function.Equals("") && !effect.Equals("") && enemyscript!=null && interactionOnGoing == false){
             Invoke(function, 0.1f);
-            Debug.Log(variable);
             for(int i = 0;i < cardselectedlist.Length; i++){
                 RectTransform a = cardselectedlist[i].transform.GetChild(0).gameObject.GetComponent<RectTransform>();
                 phaseArray[i].discardpile.Add(a);
@@ -548,26 +606,45 @@ public class battlescript : MonoBehaviour
 
     //============================================================= FUNCTION
 
-    IEnumerator removeAllDelay(){
-        interactionOnGoing = true;
-        yield return new WaitForSeconds(0.5f);
-        removeAll();
-        interactionOnGoing = false;
+    int[] effectvalue = {5, 3, 4, 2};
+
+    int variabletouse = 0;
+
+    int getid(string a){
+        int b = 0;
+        switch(a){
+            case "cyberattack":
+                b = 0;
+                break;
+            case "heal":
+                b = 1;
+                break;
+            case "shield":
+                b = 2;
+                break;
+            case "poison":
+                b = 3;
+                break;
+        }
+        return b;
     }
 
     void forloop(){
+        variabletouse = effectvalue[getid(effect)];
         for(int i = 0; i < variable; i++){
             Invoke(effect, 0.1f);
         }
-        StartCoroutine(removeAllDelay());
-    }
-
-    void outputcast(){
-        Invoke(effect, 0.1f);
         removeAll();
     }
 
+    void outputcast(){
+        variabletouse = effectvalue[getid(effect)];
+        Invoke(effect, 0.1f);
+        removeAll1();
+    }
+
     void switchcast(){
+        variabletouse = effectvalue[getid(effect)];
         switch(variable){
             case 1:
                 Invoke("gigacyberattack", 0.1f);
@@ -583,17 +660,38 @@ public class battlescript : MonoBehaviour
     }
 
     void multiplier(){
-        variable *= variable;
+        variabletouse = effectvalue[getid(effect)];
+        variabletouse *= variable;
         Invoke(effect, 0);
         removeAll();
     }
 
     void recursive(){
-        //do something
+        variabletouse = effectvalue[getid(effect)];
+        foreach(phaseClass b in phaseArray){
+            while(b.cardInHandList.Count < 4){
+                if(phaseArray[idx].drawpile.Count <= 0){
+                    if(phaseArray[idx].discardpile.Count > 0){
+                        discardtodrawpile();
+                    }else{
+                        break;
+                    }
+                }
+                if(candraw == false){
+                    break;
+                }
+                RectTransform a = b.drawpile[Random.Range(0, b.drawpile.Count)];
+                a.gameObject.GetComponent<cardlogic>().turnRaycast(true);
+                b.drawpile.Remove(a);
+                b.cardInHandList.Add(a);
+                a.SetParent(b.handTrans, true);
+            }
+        }
         removeAll();
     }
 
     void ifelse(){
+        variabletouse = effectvalue[getid(effect)];
         RectTransform a = null;
         if(variable > 3){
             foreach(phaseClass b in phaseArray){
@@ -635,41 +733,46 @@ public class battlescript : MonoBehaviour
     }
 
     void multiply(){
-        variable += variable * 2;
+        variabletouse = effectvalue[getid(effect)];
+        variabletouse += variable * variable;
         Invoke(effect, 0);
         removeAll();
     }
 
     void riskymove(){
-        variable *= 2;
+        variabletouse = effectvalue[getid(effect)];
+        variabletouse *= 2;
         Invoke(effect, 0);
-        damaged((int)(variable / 2));
-        removeAll();
+        damaged((int)(variabletouse / 2));
+        removeAll1();
     }
 
     void backwarddefense(){
-        variable += shieldvalue / 2;
+        variabletouse = effectvalue[getid(effect)];
+        variabletouse += shieldvalue;
         Invoke(effect, 0);
-        removeAll();
+        removeAll1();
     }
 
     void defensepreparation(){
-        nextturnshieldvalue += 8 + variable;
+        variabletouse = effectvalue[getid(effect)];
+        nextturnshieldvalue += 8 + variabletouse;
         Invoke(effect, 0);
         removeAll();
     }
 
     void exponential(){
-        int endvariable = variable;
+        variabletouse = effectvalue[getid(effect)];
         for(int j = 0; j<variable; j++){
-            endvariable *= endvariable;
+            variabletouse *= variabletouse;
         }
         Invoke(effect, 0);
         removeAll();
     }
 
     void redraw(){
-        for(int i =0; i < variable / 2; i++){
+        variabletouse = effectvalue[getid(effect)];
+        for(float i =0; i < variable / 2; i++){
             energy++;
             energytxt.text = energy.ToString();
         }
@@ -693,58 +796,73 @@ public class battlescript : MonoBehaviour
             }
         }
         candraw = false;
-        removeAll();
+        removeAll1();
+    }
+
+    public void wingame(){
+        variabletouse = effectvalue[getid(effect)];
+        winscreen.SetActive(true);
+        Destroy(this.gameObject);
     }
 
     void damagetoshield(){
+        variabletouse = effectvalue[getid(effect)];
         soundcontroller.Instance.playsound(3);
-        enemyscript.damaged(variable, attackeffect[0]);
-        getshield(variable);
+        enemyscript.damaged(variabletouse, attackeffect[0]);
+        getshield(variabletouse);
         removeAll();
     }
 
     void weaken(){
+        variabletouse = effectvalue[getid(effect)];
         enemyscript.reducedamageby(0.2f, variable);
         removeAll();
     }
 
     void lifesteal(){
+        variabletouse = effectvalue[getid(effect)];
         getheal(enemyscript.stealhealth(variable));
         removeAll();
     }
 
     void stun(){
+        variabletouse = effectvalue[getid(effect)];
         enemyscript.stunfor(variable);
         removeAll();
     }
 
     void chargeup(){
+        variabletouse = effectvalue[getid(effect)];
         nextturnenergyvalue += 1 + variable;
         Invoke(effect, 0.1f);
         removeAll();
     }
 
     void clone(){
+        variabletouse = effectvalue[getid(effect)];
         avoidattack++;
         Invoke(effect, 0.1f);
-        removeAll();
+        removeAll1();
     }
 
     void recklessforloop(){
+        variabletouse = effectvalue[getid(effect)];
         for(int i = 0; i < variable; i++){
             Invoke(effect, 0.1f);
-            damaged((int)(variable / 3));
+            damaged((int)(variabletouse / 3));
         }
         removeAll();
     }
 
     void revengestrike(){
+        variabletouse = effectvalue[getid(effect)];
         enemyscript.damaged(variable * ((int)healthbar.maxValue - (int)healthbar.value), attackeffect[0]);
         removeAll();
     }
 
     void sacrificialstrike(){
-        enemyscript.damaged(8 + variable, attackeffect[0]);
+        variabletouse = effectvalue[getid(effect)];
+        enemyscript.damaged(20, attackeffect[0]);
         removehealth(variable);
         removeAll();
     }
@@ -753,38 +871,44 @@ public class battlescript : MonoBehaviour
 
     void cyberattack(){
         soundcontroller.Instance.playsound(3);
-        Debug.Log(variable);
-        enemyscript.damaged(variable, attackeffect[0]);
+        enemyscript.damaged(variabletouse, attackeffect[0]);
+        Debug.Log(variabletouse);
     }
 
     void gigacyberattack(){
         soundcontroller.Instance.playsound(3);
-        enemyscript.damaged(variable * 2, attackeffect[0]);
+        enemyscript.damaged(variabletouse * 2, attackeffect[0]);
     }
 
     void heal(){
-        getheal(variable);
+        getheal(variabletouse);
     }
 
     void continuousheal(){
-        nextturnhealvalue = variable;
+        nextturnhealvalue = variabletouse;
         healduration = 3;
     }
 
     void shield(){
-        getshield(variable);
+        getshield(variabletouse);
+    }
+
+    IEnumerator shieldanim(){
+        shieldeffectobject.SetActive(true);
+        yield return new WaitForSeconds(1);
+        shieldeffectobject.SetActive(false);
     }
 
     void systemwarning(){
         enemyscript.stunfor(1);
         reducedamagetaken = 0.3f;
         reducedamagetakenduration = 2;
-        variable = (int)(variable * 1.5f);
+        variabletouse = variabletouse * 2;
         cyberattack();
     }
 
     void poison(){
-        enemyscript.addpoison(variable);
+        enemyscript.addpoison(variabletouse);
     }
 
     //============================================================= RELIC
