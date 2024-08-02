@@ -7297,10 +7297,31 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 8a0f705e6b0794f4881b1d5ef4507984, type: 3}
     text: Input Effect, Function, and Variable into the available slots to play your
       cards. <br><br>This will combine them into one for a powerful effect !!
+  - title: Card Types
+    image: {fileID: 0}
+    text: There are 3 types of cards :<br><br> <color=red>Effect cards</color> determine
+      what effect your next move will be.<br> <color=blue>Function cards</color>
+      determine how that Effect is applied.<br> <color=green>Variable cards</color>
+      determine what value will be used by the Function cards.<br><br> Make sure
+      to read each card's effect to understand how they work!
   - title: Intent
-    image: {fileID: 21300000, guid: ae6368268ad6b14499b0cb547a6f75a9, type: 3}
+    image: {fileID: 21300000, guid: 58926d06955ca4542a854872e65f8dba, type: 3}
     text: This is the Enemy's intent !! <br><br>Pay intention to them to plan your
       move.
+  - title: Health
+    image: {fileID: 21300000, guid: 1fc8b782fd9951d49b1f92faeb8fcfee, type: 3}
+    text: This is your health, make sure to protect it and dont let it go to zero
+  - title: Energy
+    image: {fileID: 21300000, guid: 14c8bff4d3ef8684b8ef1a4682acd208, type: 3}
+    text: This is your energy for the turn, use this to play your cards !! <br><br>Resets
+      to 6 at the start of turn
+  - title: Map Nodes
+    image: {fileID: 21300000, guid: d74a94723e4b8804aa3ef5659c20f02b, type: 3}
+    text: 'These are the nodes you can find :<br><br> Battle node puts you into combat
+      with enemies.<br><br> Quiz node gives you a question. Answer correctly and
+      you may obtain a reward.<br><br> Rest node allows you to heal your character.<br><br>
+      <color=red>Boss node</color> is located at the end of a map and will put you
+      into a final combat against the boss. '
 --- !u!1001 &2763269690728360160
 PrefabInstance:
   m_ObjectHideFlags: 0
