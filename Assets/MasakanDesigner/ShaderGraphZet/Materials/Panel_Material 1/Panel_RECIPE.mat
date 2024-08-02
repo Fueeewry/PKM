@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shield_RECIPE
-  m_Shader: {fileID: -6465566751694194690, guid: 864bb2269eaac2446ad080c022622c08, type: 3}
+  m_Name: Panel_RECIPE
+  m_Shader: {fileID: -6465566751694194690, guid: 62399404f28e6d94a9b9f16628f5a512, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,15 +41,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 16ad3f2e26715ec428c564669873f334, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlowTex:
-        m_Texture: {fileID: 2800000, guid: 1db770d42ff4e6443a29105480c522ff, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5a74a706f2d781b4991d2c4b8285b98d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HexaTex:
-        m_Texture: {fileID: 2800000, guid: cd4d68471c4b0124e8c3183071937c4d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5a74a706f2d781b4991d2c4b8285b98d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -65,11 +65,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondLayerTex:
-        m_Texture: {fileID: 2800000, guid: 44f78a0d4d24ca74d829fdefd30f93c9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 27c77a9c82c0576408ce7e6bf8a7b9fa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _noise1Tex:
-        m_Texture: {fileID: 2800000, guid: d64d9eee55e601b419d6f086022b679f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 01aca68c9ed612c4a8dcb8cb236411de, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -87,26 +87,27 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _GlowValue: 1
+    - _GlowValue: 0.45
     - _HexaTexRotate: 0
     - _Noise1: 24.6
-    - _Noise1Rotate: 0
-    - _Noise1Speed: 1
-    - _Noise2: 170.1
+    - _Noise1Rotate: 90
+    - _Noise1Speed: 10
+    - _Noise2: 0
     - _Noise2Speed: 5
-    - _Power: 0.76
+    - _Power: 0
     - _PowerScale: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SecondLayerTexScale: 1
+    - _SecondLayerTexRotate: -90
+    - _SecondLayerTexScale: 0.31
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0, g: 0.0103929, b: 1, a: 0}
-    - _Noise1Tiling: {r: 0, g: 0, b: 0, a: 0}
-    - _PowerOffset: {r: 0.46, g: 0, b: 0, a: 0}
+    - _GlowColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Noise1Tiling: {r: 5, g: 5, b: 0, a: 0}
+    - _PowerOffset: {r: 0, g: 0, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SecondLayerColor: {r: 0.08435953, g: 1, b: 0, a: 0}
+    - _SecondLayerColor: {r: 0.00023953419, g: 0.00019868166, b: 0.000010394853, a: 0}
     - _SecondLayerTexOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _ShieldColor: {r: 1, g: 1, b: 1, a: 0}
+    - _ShieldColor: {r: 0.00056176377, g: 0, b: 0.0019607844, a: 1}
   m_BuildTextureStacks: []

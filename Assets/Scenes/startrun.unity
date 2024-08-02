@@ -6135,6 +6135,13 @@ MonoBehaviour:
   mapButton: {fileID: 1794320755}
   mapButtonEnabledImg: {fileID: 21300000, guid: 72c5818a2dbbd514183fdedb136d8d0d, type: 3}
   mapButtonDisabledImg: {fileID: 21300000, guid: 585fbc5e4c92c05429147b0e2c95c21f, type: 3}
+  lineMaterial: {fileID: 2100000, guid: ce511f8fe2a50684084e593493570083, type: 2}
+  lineColors:
+  - {r: 0.6830188, g: 0, b: 0, a: 0}
+  - {r: 0.04171584, g: 0.115434505, b: 0.81886786, a: 0}
+  - {r: 0.14027049, g: 0.7509433, b: 0.14500874, a: 0}
+  - {r: 0.7056604, g: 0.38993528, b: 0.03594868, a: 0}
+  - {r: 0.80935204, g: 0.04833744, b: 0.82641506, a: 0}
 --- !u!1 &209794249
 GameObject:
   m_ObjectHideFlags: 0
@@ -7026,7 +7033,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &330770853
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13855,7 +13862,7 @@ MonoBehaviour:
   mapCanvas: {fileID: 330770854}
   lineContainer: {fileID: 1904415167}
   nodeContainer: {fileID: 2015237338}
-  lineColor: {fileID: 2100000, guid: ce8a600a746bc8c478185c1bc82e451c, type: 2}
+  lineColor: {fileID: 2100000, guid: ce511f8fe2a50684084e593493570083, type: 2}
   lineWidth: 2
   scrollRect: {fileID: 461854412}
   scrollPadding: 0
@@ -14149,7 +14156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75064e0a63d0fd74b94281918eb2a656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Prefab: {fileID: 2222599398805689187, guid: cde1245abcb36664c8d458f4231d495d, type: 3}
 --- !u!199 &518507196
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -19089,7 +19095,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 100.00003, y: 141.00005}
+  m_AnchoredPosition: {x: 100.00006, y: 141.00005}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &520565737
@@ -28913,6 +28919,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: charPKM
       objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: d97a4a3adfbc3f34e980584d270fb79e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7983591996778185062, guid: d97a4a3adfbc3f34e980584d270fb79e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -30500,7 +30510,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -100.00003, y: 141.00003}
+  m_AnchoredPosition: {x: -100.00006, y: 141.00003}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982216518
@@ -30900,7 +30910,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 100.00003, y: 141.00005}
+  m_AnchoredPosition: {x: 100.00006, y: 141.00005}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1038973115
@@ -39655,7 +39665,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -100.00003, y: 141.00003}
+  m_AnchoredPosition: {x: -100.00006, y: 141.00003}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1448646759
@@ -39949,7 +39959,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7ad57dd0c8043754f9575a8f842208c9, type: 2}
+  - {fileID: 2100000, guid: 2faa6add2347e234c9af4b4c243320fd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51078,7 +51088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -100.00003, y: 141.00003}
+  m_AnchoredPosition: {x: -100.00006, y: 141.00003}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1634369427
@@ -53087,7 +53097,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 100.00003, y: 141.00005}
+  m_AnchoredPosition: {x: 100.00006, y: 141.00005}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1819664414
