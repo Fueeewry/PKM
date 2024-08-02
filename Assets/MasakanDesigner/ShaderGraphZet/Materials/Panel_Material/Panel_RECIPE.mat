@@ -84,7 +84,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondLayerTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 27c77a9c82c0576408ce7e6bf8a7b9fa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondLayerTexture:
@@ -118,7 +118,7 @@ Material:
     - _HexaTexRotate: 0
     - _Noise1: 33.41
     - _Noise1Rotate: 90
-    - _Noise1Speed: 6.17
+    - _Noise1Speed: 1
     - _Noise2: 0.87
     - _Noise2Speed: 5.56
     - _Power: 0
@@ -126,19 +126,20 @@ Material:
     - _PowerScale: 1.65
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SecondLayerTexScale: 1
+    - _SecondLayerTexRotate: -90
+    - _SecondLayerTexScale: 0.44
     - _noise1Speed: 1
     - _noise2Speed: 5
     m_Colors:
     - _Color: {r: 1024, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0, g: 0.00041001054, b: 0.00043516463, a: 0.4392157}
-    - _Noise1Tiling: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _GlowColor: {r: 0.0004351646, g: 0, b: 0.0003148689, a: 0.4392157}
+    - _Noise1Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _PowerOffset: {r: 0, g: 0, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SecondLayerColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SecondLayerColor: {r: 0.0001502862, g: 0.0001502862, b: 0.0001502862, a: 1}
     - _SecondLayerTexOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _ShieldColor: {r: 0, g: 0.000013523406, b: 0.0004304959, a: 1}
+    - _ShieldColor: {r: 0, g: 0.00006174032, b: 0.00020688429, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &6099757652761299981
 MonoBehaviour:
