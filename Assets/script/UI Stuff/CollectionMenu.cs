@@ -7,27 +7,35 @@ using UnityEngine.UI;
 
 public class CollectionMenu : MonoBehaviour
 {
-    [SerializeField] private TMP_Text cardName;
     [SerializeField] private TMP_Text cardInfo;
     [SerializeField] private Image cardImage;
-    [SerializeField] private GameObject content;
-    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private GameObject cardContent;
+    [SerializeField] private GameObject cardButtonPrefab;
 
     private List<CollectionItemHolder> cards = new List<CollectionItemHolder>();
     private List<GameObject> selections = new List<GameObject>();
 
     private int selectedIndex = 0;
 
+    [SerializeField] private TMP_Text tutorText;
+    [SerializeField] private Image tutorImage;
+    [SerializeField] private GameObject tutorContent;
+    [SerializeField] private GameObject tutorButtonPrefab;
+    [SerializeField] private RectTransform layoutGroupRectTransform;
+
+    public List<TutorialContent> tutorials;
+
     private void OnEnable()
     {
         RefreshContent();
+        InitializeTutorialContents();
     }
 
     private void RefreshContent()
     {
         cards.Clear();
         selections.Clear();
-        foreach (Transform child in content.transform)
+        foreach (Transform child in cardContent.transform)
         {
             GameObject.Destroy(child.gameObject);
         }
@@ -43,7 +51,7 @@ public class CollectionMenu : MonoBehaviour
         for(int i = 0; i < cards.Count; i++)
         {
             int index = i;
-            GameObject selection = Instantiate(buttonPrefab, content.transform);
+            GameObject selection = Instantiate(cardButtonPrefab, cardContent.transform);
             selections.Add(selection);
 
             Image selectionImage = selection.GetComponent<Image>();
@@ -89,5 +97,56 @@ public class CollectionMenu : MonoBehaviour
                 break;
         }
         return text;
+    }
+
+    public void ShowTutorialContent(int index)
+    {
+        //Debug.Log("showing at index " + index);
+        if(tutorials[index].image == null)
+        {
+            tutorImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            tutorImage.gameObject.SetActive(true);
+            tutorImage.sprite = tutorials[index].image;
+        }
+        tutorText.text = tutorials[index].text;
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroupRectTransform);
+    }
+
+    private void InitializeTutorialContents()
+    {
+        foreach (Transform child in tutorContent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        int count = tutorials.Count;
+        for (int i = 0; i < count; i++)
+        {
+            int index = i;
+            GameObject button = Instantiate(tutorButtonPrefab, tutorContent.transform);
+            button.GetComponentInChildren<TMP_Text>().text = tutorials[index].title;
+            button.GetComponent<Button>().onClick.AddListener(() => ShowTutorialContent(index));
+        }
+
+        ShowTutorialContent(0);
+    }
+}
+
+[Serializable]
+public class TutorialContent
+{
+    public string title;
+    public Sprite image;
+    public String text;
+
+    public TutorialContent(String title, Sprite image, String text)
+    {
+        this.title = title;
+        this.image = image;
+        this.text = text;
     }
 }
