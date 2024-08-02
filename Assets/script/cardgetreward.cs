@@ -37,16 +37,4 @@ public class cardgetreward : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
     {
         cursorcontroller.Instance.ExitHover();
     }
-
-    public void OnPointerEnter(PointerEventData pointerEventData)
-    {
-        cursorcontroller.Instance.EnterHover();
-        soundcontroller.Instance.playsound(7);
-    }
-
-    //Detect when Cursor leaves the GameObject
-    public void OnPointerExit(PointerEventData pointerEventData)
-    {
-        cursorcontroller.Instance.ExitHover();
-    }
 }

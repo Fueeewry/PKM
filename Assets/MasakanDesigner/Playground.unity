@@ -686,18 +686,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CyberneticAttack
       objectReference: {fileID: 0}
-    - target: {fileID: 4715561519081869905, guid: 594abe4ab6315f4498f9ca5b98874713, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 4300000, guid: 5565e8a50de053748bde9d975528355a, type: 3}
-    - target: {fileID: 4715561519081869905, guid: 594abe4ab6315f4498f9ca5b98874713, type: 3}
-      propertyPath: m_EnableGPUInstancing
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4715561519081869905, guid: 594abe4ab6315f4498f9ca5b98874713, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 7e2444695c4ec9147ba5f283c7ba3239, type: 2}
     - target: {fileID: 4715561519081869907, guid: 594abe4ab6315f4498f9ca5b98874713, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.46
