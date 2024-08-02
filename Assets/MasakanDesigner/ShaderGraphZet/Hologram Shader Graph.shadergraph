@@ -23,6 +23,9 @@
         },
         {
             "m_Id": "287de14b99fb430e9e4460c95771344f"
+        },
+        {
+            "m_Id": "bd937f9200bf42f9a5c3cc4776ac3301"
         }
     ],
     "m_Keywords": [],
@@ -185,6 +188,9 @@
         },
         {
             "m_Id": "49c680b75a89454990ba3a69dced3996"
+        },
+        {
+            "m_Id": "88bd12caa7884081824002cf146e567d"
         }
     ],
     "m_GroupDatas": [
@@ -520,6 +526,20 @@
                     "m_Id": "38c38aaa756d6f82a0cb3a0693211dda"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "88bd12caa7884081824002cf146e567d"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "7472781361fd4a3dad0060565f9e1c58"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -2267,7 +2287,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Max",
     "m_StageCapability": 3,
-    "m_Value": 96.0999984741211,
+    "m_Value": 1.0,
     "m_DefaultValue": 1.0,
     "m_Labels": [
         "X"
@@ -2718,6 +2738,9 @@
     "m_Name": "",
     "m_ChildObjectList": [
         {
+            "m_Id": "bd937f9200bf42f9a5c3cc4776ac3301"
+        },
+        {
             "m_Id": "9f0a8f203580638680b247afa060f1c6"
         },
         {
@@ -2855,6 +2878,19 @@
     "m_Property": {
         "m_Id": "36865b3915e391879bea0056deb32a8c"
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
+    "m_ObjectId": "50f48c83f3b44a2084503a70b6bec3ca",
+    "m_Id": 0,
+    "m_DisplayName": "baseTex",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
 }
 
 {
@@ -4064,6 +4100,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "88bd12caa7884081824002cf146e567d",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -21.172019958496095,
+            "y": -614.7448120117188,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "50f48c83f3b44a2084503a70b6bec3ca"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "bd937f9200bf42f9a5c3cc4776ac3301"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.MultiplyNode",
     "m_ObjectId": "90ea400d4ceb4bfa9febc4c9d780227c",
     "m_Group": {
@@ -5134,6 +5206,36 @@
         "w": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "bd937f9200bf42f9a5c3cc4776ac3301",
+    "m_Guid": {
+        "m_GuidSerialized": "abd04edc-1f67-4a39-b7fb-6880ff8eae4c"
+    },
+    "m_Name": "baseTex",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "baseTex",
+    "m_DefaultReferenceName": "_baseTex",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_Guid": ""
+    },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
+    "m_Modifiable": true,
+    "m_DefaultType": 0
 }
 
 {
@@ -6459,7 +6561,7 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
-    "m_Value": 0.0,
+    "m_Value": 34.939998626708987,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
