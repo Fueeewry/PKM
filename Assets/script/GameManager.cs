@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     public void ChangeScene(string targetScene)

@@ -35,7 +35,7 @@ PrefabInstance:
     - target: {fileID: 2506967050257329564, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1b1ef2d44ed594f4ab41d5817ccacff6, type: 3}
+      objectReference: {fileID: 21300000, guid: 9a256af08436cf2449631bff41147964, type: 3}
     - target: {fileID: 2874445336209900594, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Name
       value: poison

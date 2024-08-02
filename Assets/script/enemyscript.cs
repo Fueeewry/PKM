@@ -23,6 +23,8 @@ public class enemyscript : MonoBehaviour, IDamageable
 
     void Start(){
         //bs = GameObject.Find("Player").GetComponent<battlescript>();
+        healthbar.maxValue += (battlescript.Instance.levelstage - 1) * 6;
+        healthbar.value += healthbar.maxValue;
         healthtext.text = healthbar.value + " / " + healthbar.maxValue;
         if(anim == null){
             anim = GetComponent<Animator>();
@@ -64,6 +66,10 @@ public class enemyscript : MonoBehaviour, IDamageable
                     break;
                 case 2:
                     anim.Play("dronehit");
+                    anim.speed = Random.Range(1f, 2f);
+                    break;
+                case 3:
+                    anim.Play("GetHit");
                     anim.speed = Random.Range(1f, 2f);
                     break;
             }
@@ -149,7 +155,7 @@ public class enemyscript : MonoBehaviour, IDamageable
             return;
         }
         mv = variation[Random.Range(0, variation.Count)];
-        instantiatedIntent = Instantiate(intent[mv.type], transform.position + new Vector3(0, 1.5f, 0), Quaternion.Euler(0,0,0));
+        instantiatedIntent = Instantiate(intent[mv.type], transform.position + new Vector3(0, intentheight, 0), Quaternion.Euler(0,0,0));
         instantiatedIntent.GetComponentInChildren<TMP_Text>().text = (mv.value * weakenvalue).ToString();
     }
 

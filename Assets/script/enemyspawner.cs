@@ -28,19 +28,19 @@ public class enemyspawner : MonoBehaviour
             List<GameObject> enemylist = battlescript.Instance.enemylist;
             int[] a = enemyCombinationList[Random.Range(0, enemyCombinationList.Count)].combination;
             for(int i = 0; i<a.Length;i++){
-                GameObject b = Instantiate(enemylist[a[i]], transform.position + new Vector3((i + 2) * 2 , (i + 2) * -1, 0), Quaternion.Euler(0,0,0));
+                GameObject b = Instantiate(enemylist[a[i]], transform.position + new Vector3((i + 2) * 2 , (i + 1.75f) * -1, 0), Quaternion.Euler(0,0,0));
                 enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
             }
             InvokeRepeating("checkbattledone", 0.02f, 0.02f);
         }else{
             int i = 0;
-            GameObject b = Instantiate(droneboss, transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
+            GameObject b = Instantiate(droneboss, transform.position + new Vector3((i + 1) * 2.25f , -2.5f, 0), Quaternion.Euler(0,0,0));
             enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
             i++;
-            b = Instantiate(bossobject, transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
+            b = Instantiate(bossobject, transform.position + new Vector3((i + 1) * 2.25f , -2.5f, 0), Quaternion.Euler(0,0,0));
             enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
             i++;
-            b = Instantiate(droneboss, transform.position + new Vector3((i + 2) * 2 , 0, 0), Quaternion.Euler(0,0,0));
+            b = Instantiate(droneboss, transform.position + new Vector3((i + 1) * 2.25f , -2.5f, 0), Quaternion.Euler(0,0,0));
             enemyInstantiatedList.Add(b.GetComponent<IDamageable>());
             InvokeRepeating("checkbattledone1", 0.02f, 0.02f);
         }

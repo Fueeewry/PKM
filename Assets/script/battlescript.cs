@@ -17,7 +17,7 @@ public class battlescript : MonoBehaviour
     }
 
     public phaseClass[] phaseArray;
-    public GameObject[] cardselectedlist, phaseObject, attackeffect;
+    public GameObject[] cardselectedlist, phaseObject, attackeffect, switchcastoutput;
     public Transform[] deckshows;
     public GameObject goToEffect, rewards, cardSelect, relic, shieldobject, canvas, damageshow, deathscreen, relicobject, healobject, winscreen, shieldeffectobject, mapbutton;
     public Transform arrow, rewardGrid, relicgrid;
@@ -26,7 +26,7 @@ public class battlescript : MonoBehaviour
     public Slider healthbar;
     public TMP_Text energytxt, shieldtext, healthtext, healthtext1, titlestage;
     public List<relicvariant> relicVariantList = new List<relicvariant>();
-    public Animator anim;
+    public Animator anim, deathanim;
 
     bool interactionOnGoing = false, candraw = false;
     
@@ -50,13 +50,14 @@ public class battlescript : MonoBehaviour
         StartBattle();
     }
     
-    int levelstage = 1;
+    public int levelstage = 1;
     public void sceneChanger(string a){
         SceneManager.LoadScene(a);
 
+        rewards.SetActive(false);
+
         levelstage++;
         titlestage.text = "STAGE " + levelstage;
-
         if(a.Equals("event")){
             canvas.SetActive(false);
             mapbutton.SetActive(true);
@@ -68,6 +69,7 @@ public class battlescript : MonoBehaviour
             canvas.SetActive(true);
             soundcontroller.Instance.playsound(9);
             mapbutton.SetActive(false);
+            arrow.gameObject.SetActive(true);
             StartBattle();
         }
     }
@@ -83,6 +85,7 @@ public class battlescript : MonoBehaviour
         rewards.SetActive(true);
         canvas.SetActive(false);
         mapbutton.SetActive(true);
+        arrow.gameObject.SetActive(false);
         if(isrelic == true){
             relic.SetActive(true);
             int relicchoosen = Random.Range(0, relicVariantList.Count);
@@ -91,6 +94,23 @@ public class battlescript : MonoBehaviour
             relic.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = relicinstantiated.image;
         }else{
             cardSelect.SetActive(true);
+        }
+        foreach(phaseClass pc in phaseArray){
+            foreach(RectTransform rt in pc.drawpile){
+                if(rt.gameObject.tag == "exhaust"){
+                    Destroy(rt.gameObject);
+                }
+            }
+            foreach(RectTransform rt in pc.cardInHandList){
+                if(rt.gameObject.tag == "exhaust"){
+                    Destroy(rt.gameObject);
+                }
+            }
+            foreach(RectTransform rt in pc.discardpile){
+                if(rt.gameObject.tag == "exhaust"){
+                    Destroy(rt.gameObject);
+                }
+            }
         }
     }
     public void spawnrelic(){
@@ -285,9 +305,13 @@ public class battlescript : MonoBehaviour
     public void trueStartTurn(){
         killedanenemy();
         if(nextturnshieldvalue > 0){
-            shieldvalue += nextturnshieldvalue;
+            shieldvalue = nextturnshieldvalue;
             shieldtext.text = shieldvalue.ToString();
             shieldobject.SetActive(true);
+        }else{
+            shieldvalue = 0;
+            shieldtext.text = shieldvalue.ToString();
+            shieldobject.SetActive(false);
         }
 
         if(shieldvalue > 0){
@@ -298,12 +322,13 @@ public class battlescript : MonoBehaviour
 
         if(nextturnhealvalue > 0){
             if(healduration > 0){
-                healthbar.value += nextturnhealvalue;
+                getheal(nextturnhealvalue);
                 healduration--;
             }else{
                 nextturnhealvalue = 0;
             }
         }
+
         nextturnshieldvalue = 0;
 
         refreshEnergy();
@@ -437,7 +462,8 @@ public class battlescript : MonoBehaviour
         }
     }
     public void dead(){
-        deathscreen.SetActive(true);
+        anim.Play("Died");
+        deathanim.Play("deathscreenanim");
     }
     public void endrun(){
 
@@ -552,13 +578,29 @@ public class battlescript : MonoBehaviour
         removeEffect();
         cardselectedlist[2].GetComponent<receiver>().changestate(true);
     }
+    public void removeAll2(){
+        removeVariable();
+        removeFunction();
+        cardselectedlist[2].GetComponent<receiver>().changestate(true);
+    }
 
     public void getshield(int value){
         soundcontroller.Instance.playsound(0);
         shieldobject.SetActive(true);
         shieldvalue += value;
+        if(shieldvalue > 20){
+            shieldvalue = 20;
+        }
         shieldtext.text = shieldvalue.ToString();
         StartCoroutine(shieldanim());
+    }
+
+    public bool isExhaust(){
+        if(effect.Equals("gigacyberattack") || effect.Equals("continuousheal") || effect.Equals("systemwarning")){
+            Destroy(cardselectedlist[0].transform.GetChild(0).gameObject);
+            return true;
+        }   
+        return false;
     }
 
     public void mixingCard(){
@@ -566,6 +608,9 @@ public class battlescript : MonoBehaviour
             Invoke(function, 0.1f);
             for(int i = 0;i < cardselectedlist.Length; i++){
                 if(i == 2){
+                    continue;
+                }
+                if(i == 0 && isExhaust() == true){
                     continue;
                 }
                 RectTransform a = cardselectedlist[i].transform.GetChild(0).gameObject.GetComponent<RectTransform>();
@@ -577,10 +622,13 @@ public class battlescript : MonoBehaviour
             return;
         }
 
-        if(variable!=-1 && (function.Equals("sacrificialstrike") ||function.Equals("damagetoshield") || function.Equals("weaken") || function.Equals("lifesteal") || function.Equals("stun") || function.Equals("clone")) && enemyscript!=null && interactionOnGoing == false){
+        if(variable!=-1 && (function.Equals("sacrificialstrike") ||function.Equals("damagetoshield") || function.Equals("weaken") || function.Equals("lifesteal") || function.Equals("stun")) && enemyscript!=null && interactionOnGoing == false){
             Invoke(function, 0.1f);
             for(int i = 0;i < cardselectedlist.Length; i++){
                 if(i == 0){
+                    continue;
+                }
+                if(i == 0 && isExhaust() == true){
                     continue;
                 }
                 RectTransform a = cardselectedlist[i].transform.GetChild(0).gameObject.GetComponent<RectTransform>();
@@ -595,6 +643,9 @@ public class battlescript : MonoBehaviour
         if(variable!=-1 && !function.Equals("") && !effect.Equals("") && enemyscript!=null && interactionOnGoing == false){
             Invoke(function, 0.1f);
             for(int i = 0;i < cardselectedlist.Length; i++){
+                if(i == 0 && isExhaust() == true){
+                    continue;
+                }
                 RectTransform a = cardselectedlist[i].transform.GetChild(0).gameObject.GetComponent<RectTransform>();
                 phaseArray[i].discardpile.Add(a);
                 phaseArray[i].cardInHandList.Remove(a);
@@ -648,12 +699,15 @@ public class battlescript : MonoBehaviour
         switch(variable){
             case 1:
                 Invoke("gigacyberattack", 0.1f);
+                phaseArray[0].cardInHandList.Add(Instantiate(switchcastoutput[0], phaseArray[0].handTrans).GetComponent<RectTransform>());
                 break;
             case 2:
                 Invoke("continuousheal", 0.1f);
+                phaseArray[0].cardInHandList.Add(Instantiate(switchcastoutput[1], phaseArray[0].handTrans).GetComponent<RectTransform>());
                 break;
             case 3:
                 Invoke("systemwarning", 0.1f);
+                phaseArray[0].cardInHandList.Add(Instantiate(switchcastoutput[2], phaseArray[0].handTrans).GetComponent<RectTransform>());
                 break;
         }
         removeAll();
@@ -810,25 +864,25 @@ public class battlescript : MonoBehaviour
         soundcontroller.Instance.playsound(3);
         enemyscript.damaged(variabletouse, attackeffect[0]);
         getshield(variabletouse);
-        removeAll();
+        removeAll2();
     }
 
     void weaken(){
         variabletouse = effectvalue[getid(effect)];
         enemyscript.reducedamageby(0.2f, variable);
-        removeAll();
+        removeAll2();
     }
 
     void lifesteal(){
         variabletouse = effectvalue[getid(effect)];
         getheal(enemyscript.stealhealth(variable));
-        removeAll();
+        removeAll2();
     }
 
     void stun(){
         variabletouse = effectvalue[getid(effect)];
         enemyscript.stunfor(variable);
-        removeAll();
+        removeAll2();
     }
 
     void chargeup(){
@@ -864,7 +918,7 @@ public class battlescript : MonoBehaviour
         variabletouse = effectvalue[getid(effect)];
         enemyscript.damaged(20, attackeffect[0]);
         removehealth(variable);
-        removeAll();
+        removeAll2();
     }
 
     //============================================================= OUTPUT / EFFECT

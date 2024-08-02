@@ -23,7 +23,7 @@ PrefabInstance:
     - target: {fileID: 2506967050257329564, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b88b45b24be6f5d49bc32286d6dc607b, type: 3}
+      objectReference: {fileID: 1128721981, guid: b88b45b24be6f5d49bc32286d6dc607b, type: 3}
     - target: {fileID: 2874445336209900594, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Name
       value: forloop

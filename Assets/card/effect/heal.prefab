@@ -31,7 +31,7 @@ PrefabInstance:
     - target: {fileID: 2506967050257329564, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: ca2da9fedd49f2a47b40547cc589b42f, type: 3}
+      objectReference: {fileID: 21300000, guid: 8f8d82fc83c7d7447a731c1a95d4639e, type: 3}
     - target: {fileID: 2874445336209900594, guid: 212c77a6d3101c64cae9ecd89094efda, type: 3}
       propertyPath: m_Name
       value: heal
