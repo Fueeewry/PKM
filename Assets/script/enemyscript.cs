@@ -156,7 +156,8 @@ public class enemyscript : MonoBehaviour, IDamageable
         }
         mv = variation[Random.Range(0, variation.Count)];
         instantiatedIntent = Instantiate(intent[mv.type], transform.position + new Vector3(0, intentheight, 0), Quaternion.Euler(0,0,0));
-        instantiatedIntent.GetComponentInChildren<TMP_Text>().text = (mv.value * weakenvalue).ToString();
+        int c = (int)(mv.value * weakenvalue);
+        instantiatedIntent.GetComponentInChildren<TMP_Text>().text = c.ToString();
     }
 
     public void move(){
