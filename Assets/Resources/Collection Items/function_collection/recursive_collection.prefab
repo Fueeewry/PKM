@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardLogic: {fileID: 7558576594703878424, guid: a7bfeb3cdce87b04cbe0486ba0d3298f, type: 3}
-  cardSprite: {fileID: 21300000, guid: 717443dd90f01e4458b312bafed0ab88, type: 3}
+  cardSprite: {fileID: 1083897973, guid: 717443dd90f01e4458b312bafed0ab88, type: 3}
