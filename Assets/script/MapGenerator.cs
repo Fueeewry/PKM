@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject nodeContainer;
 
 
-    [SerializeField] private Color lineColor = Color.white;
+    [SerializeField] private Material lineColor;
     [SerializeField] private float lineWidth = 2f;
 
 
@@ -371,7 +372,7 @@ public class MapGenerator : MonoBehaviour
         GameObject lineObj = new GameObject("Line");
         lineObj.transform.SetParent(lineContainer.transform, false);
         Image lineImage = lineObj.AddComponent<Image>();
-        lineImage.color = lineColor;
+        lineImage.material = lineColor;
 
         RectTransform rectTransform = lineObj.GetComponent<RectTransform>();
         Vector2 dir = (end - start).normalized;

@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Attack.png.meta
-guid: 9fd64220a3066f14ca1265b4205526e0
-========
-guid: edc76fb672a59544dbf83c09de429a50
->>>>>>>> Designer/VFX:Assets/Deck Icon.png.meta
+guid: 1db770d42ff4e6443a29105480c522ff
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
