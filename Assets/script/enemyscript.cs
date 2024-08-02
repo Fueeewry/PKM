@@ -37,7 +37,7 @@ public class enemyscript : MonoBehaviour, IDamageable
     }
     public void damaged(int damage, GameObject effect){
         if(effect != null){
-            Instantiate(effect, transform.position, Quaternion.Euler(0,0,0));
+            Instantiate(effect, transform.position, Quaternion.Euler(-90,0,0));
         }
         if(shieldvalue > 0){
             if(shieldvalue > damage){
