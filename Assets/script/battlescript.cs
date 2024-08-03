@@ -725,7 +725,7 @@ public class battlescript : MonoBehaviour
     void multiplier(){
         variabletouse = effectvalue[getid(effect)];
         variabletouse *= variable;
-        Invoke(effect, 0);
+        Invoke(effect, 0.1f);
         removeAll();
     }
 
@@ -798,14 +798,14 @@ public class battlescript : MonoBehaviour
     void multiply(){
         variabletouse = effectvalue[getid(effect)];
         variabletouse += variable * variable;
-        Invoke(effect, 0);
+        Invoke(effect, 0.1f);
         removeAll();
     }
 
     void riskymove(){
         variabletouse = effectvalue[getid(effect)];
         variabletouse *= 2;
-        Invoke(effect, 0);
+        Invoke(effect, 0.1f);
         damaged((int)(variabletouse / 2));
         removeAll1();
     }
@@ -813,23 +813,24 @@ public class battlescript : MonoBehaviour
     void backwarddefense(){
         variabletouse = effectvalue[getid(effect)];
         variabletouse += shieldvalue;
-        Invoke(effect, 0);
+        Invoke(effect, 0.1f);
         removeAll1();
     }
 
     void defensepreparation(){
         variabletouse = effectvalue[getid(effect)];
         nextturnshieldvalue += 8 + variabletouse;
-        Invoke(effect, 0);
+        Invoke(effect, 0.1f);
         removeAll();
     }
 
     void exponential(){
-        variabletouse = effectvalue[getid(effect)];
+        int variablesssss = effectvalue[getid(effect)];
+        int variabletouse = effectvalue[getid(effect)];
         for(int j = 0; j<variable; j++){
-            variabletouse *= variabletouse;
+            variabletouse *= variablesssss;
         }
-        Invoke(effect, 0);
+        Invoke(effect, 0.1f);
         removeAll();
     }
 
